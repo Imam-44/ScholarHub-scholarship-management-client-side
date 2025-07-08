@@ -1,9 +1,56 @@
 import React from 'react';
 import { MdEmail } from 'react-icons/md';
 import { RiLockPasswordLine } from 'react-icons/ri';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import useAuth from '../hooks/useAuth';
+import toast from 'react-hot-toast';
+import Swal from 'sweetalert2';
 
 const SignIn = () => {
+  const { signIn, signInWithGoogle } = useAuth()
+  const navigate = useNavigate()
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+    const form = e.target 
+    const email = form.email.value 
+    const password = form.password.value
+
+    try{
+      const result = await signIn(email, password)
+     if(result){
+        Swal.fire({
+            icon: "success",
+            title: "your account log in successfully",
+            showConfirmButton: false,
+            timer: 1500
+          })
+     }
+      navigate('/')
+    } catch (err){
+     if(err) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Your email/password are wrong!",
+
+          });
+     }
+    }
+  };
+
+  const handleGoogleSignIn = async() => {
+  
+    try{
+      const result = await signInWithGoogle()
+      toast.success('Logged in successfully!')
+      navigate('/')
+    } catch(err){
+        if(err){
+          toast.error(err.message)
+        }
+    }
+  }
   return (
     <div className="bg-gradient-to-r from-amber-300 via-yellow-150 to-amber-900 min-h-screen flex items-center justify-center">
       <div className="w-11/12 max-w-screen-2xl mx-auto flex h-[700px] my-5 rounded-xl shadow-lg overflow-hidden bg-white/90">
@@ -19,15 +66,15 @@ const SignIn = () => {
 
         {/* Right Form */}
         <div className="w-full flex flex-col items-center justify-center px-4">
-          <form className="md:w-96 w-80 flex flex-col items-center justify-center">
+          <form onSubmit={handleSubmit} className="md:w-96 w-80 flex flex-col items-center justify-center">
             <h2 className="text-4xl text-amber-600 font-medium">Sign in</h2>
             <p className="text-sm text-amber-500/90 mt-3">
               Welcome back! Please sign in to continue
             </p>
 
-            <button
+            <button onClick={handleGoogleSignIn}
               type="button"
-              className="w-full mt-8 bg-amber-500/10 flex items-center justify-center h-12 rounded-full"
+              className="w-full mt-8 bg-amber-500/10 flex items-center justify-center h-12 rounded-full cursor-pointer"
             >
               <img
                 src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleLogo.svg"
@@ -48,6 +95,7 @@ const SignIn = () => {
               <MdEmail className="text-xl text-red-900" />
               <input
                 type="email"
+                name='email'
                 placeholder="Email id"
                 className="bg-transparent text-black placeholder-gray-500/80 outline-none text-sm w-full h-full"
                 required
@@ -59,6 +107,7 @@ const SignIn = () => {
               <RiLockPasswordLine className="text-xl text-red-900" />
               <input
                 type="password"
+                name='password'
                 placeholder="Password"
                 className="bg-transparent text-black placeholder-gray-500/80 outline-none text-sm w-full h-full"
                 required
@@ -80,7 +129,7 @@ const SignIn = () => {
 
             <button
               type="submit"
-              className="mt-8 w-full h-11 rounded-full text-white bg-amber-600 hover:opacity-90 transition-opacity"
+              className="mt-8 w-full h-11 rounded-full text-white bg-amber-600 hover:opacity-90 transition-opacity cursor-pointer"
             >
               Login
             </button>

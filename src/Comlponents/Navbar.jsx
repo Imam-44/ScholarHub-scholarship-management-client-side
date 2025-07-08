@@ -8,32 +8,26 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-md px-6 py-4">
-      <div className="w-11/12 max-w-screen-2xl mx-auto flex justify-between items-center">
+      <div className="w-11/12 max-w-screen-2xl mx-auto flex justify-between  items-center">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-amber-600">🎓ScholarX</Link>
+        <Link to="/" className="text-4xl font-bold text-amber-600">🎓ScholarX</Link>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex items-center gap-6 text-gray-700 font-medium">
+        <ul className="hidden md:flex items-center gap-6 text-gray-700 font-medium text-lg">
           <li><Link to="/">Home</Link></li>
           <li><Link to="/all-scholarship">All Scholarship</Link></li>
           <li><Link to="/user-dashboard">User Dashboard</Link></li>
           <li><Link to="/admin-dashboard">Admin Dashboard</Link></li>
 
-          <li>
+          <li className='ml-0 md:ml-10'>
             <Link
               to="/signin"
-              className="bg-red-950 text-white px-5 py-2 rounded hover:bg-red-800 transition"
+              className="bg-amber-600 text-white px-5 py-2 rounded hover:bg-amber-800 transition"
             >
               Sign In
             </Link>
           </li>
-          <li>
-            <Link to={'/signout'}
-              className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-800 transition"
-            >
-              Sign Out
-            </Link>
-          </li>
+         
         </ul>
 
         {/* Mobile Menu Toggle */}
@@ -65,13 +59,7 @@ const Navbar = () => {
                 Login
               </Link>
             </li>
-            <li>
-              <Link to={"/signout"}
-                className="bg-amber-600 text-white px-8.5 py-2 rounded hover:bg-amber-800 transition"
-              >
-                Logout
-              </Link>
-            </li>
+            
           </motion.ul>
         )}
       </AnimatePresence>

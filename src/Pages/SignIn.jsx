@@ -1,10 +1,11 @@
 import React from 'react';
 import { MdEmail } from 'react-icons/md';
 import { RiLockPasswordLine } from 'react-icons/ri';
+import { Link } from 'react-router';
 
 const SignIn = () => {
   return (
-    <div className="bg-gradient-to-r from-amber-100 via-yellow-50 to-amber-200 min-h-screen flex items-center justify-center">
+    <div className="bg-gradient-to-r from-amber-300 via-yellow-150 to-amber-900 min-h-screen flex items-center justify-center">
       <div className="w-11/12 max-w-screen-2xl mx-auto flex h-[700px] my-5 rounded-xl shadow-lg overflow-hidden bg-white/90">
         
         {/* Left Image */}
@@ -85,9 +86,9 @@ const SignIn = () => {
             </button>
             <p className="text-gray-500/90 text-sm mt-4">
               Don’t have an account?{" "}
-              <a className="text-amber-600 hover:underline" href="#">
+              <Link to={'/signup'} className="text-amber-600 hover:underline" >
                 Sign up
-              </a>
+              </Link>
             </p>
           </form>
         </div>

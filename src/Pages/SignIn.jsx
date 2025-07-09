@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router';
 import useAuth from '../hooks/useAuth';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
+import { FaGoogle } from 'react-icons/fa'
 
 const SignIn = () => {
   const { signIn, signInWithGoogle } = useAuth()
@@ -75,11 +76,8 @@ const SignIn = () => {
             <button onClick={handleGoogleSignIn}
               type="button"
               className="w-full mt-8 bg-amber-500/10 flex items-center justify-center h-12 rounded-full cursor-pointer"
-            >
-              <img
-                src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleLogo.svg"
-                alt="googleLogo"
-              />
+            > <FaGoogle className="text-amber-600" />
+              <h2 className='ml-1'>Login With Google</h2>
             </button>
 
             <div className="flex items-center gap-4 w-full my-5">

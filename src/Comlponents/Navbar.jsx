@@ -6,17 +6,16 @@ import useAuth from '../hooks/useAuth'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const {user} = useAuth()
+  const { user, signOutUser } = useAuth()
 
-  const navLinkClass = ({ isActive }) => 
+  const navLinkClass = ({ isActive }) =>
     isActive
-    ? 'text-amber-600 border-b-4 border-amber-600 pb-1 font-semibold text-lg'
-    : ''
-  
+      ? 'text-amber-600 border-b-4 border-amber-600 pb-1 font-semibold text-lg'
+      : 'hover:text-amber-600 transition'
 
   return (
-    <nav className="bg-white shadow-md px-6 py-4">
-      <div className="w-11/12 max-w-screen-2xl mx-auto flex justify-between  items-center">
+    <nav className="bg-white shadow-md px-6 py-4 relative z-50">
+      <div className="w-11/12 max-w-screen-2xl mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="text-4xl font-bold text-amber-600">🎓ScholarX</Link>
 
@@ -27,15 +26,40 @@ const Navbar = () => {
           <li><NavLink to="/user-dashboard" className={navLinkClass}>User Dashboard</NavLink></li>
           <li><NavLink to="/admin-dashboard" className={navLinkClass}>Admin Dashboard</NavLink></li>
 
-          <li className=''>
-            <Link
-              to="/signin"
-              className="bg-amber-600 text-white px-5 py-2 rounded hover:bg-amber-800 transition"
-            >
-              Sign In
-            </Link>
-          </li>
-         
+          {user ? (
+            <>
+              {/* Profile Picture with Tooltip */}
+              <li className="relative group">
+                <img
+                  className="w-10 h-10 rounded-full border-2 border-amber-500 object-cover cursor-pointer"
+                  src={user.photoURL}
+                  alt="User"
+                />
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 -mb-2 bg-amber-600 text-white px-3 py-1 rounded shadow-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-50">
+                  {user.displayName}
+                </div>
+              </li>
+
+              {/* Sign Out Button */}
+              <li>
+                <button
+                  onClick={signOutUser}
+                  className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition cursor-pointer"
+                >
+                  Sign Out
+                </button>
+              </li>
+            </>
+          ) : (
+            <li>
+              <Link
+                to="/signin"
+                className="bg-amber-600 text-white px-5 py-2 rounded hover:bg-amber-700 transition"
+              >
+                Sign In
+              </Link>
+            </li>
+          )}
         </ul>
 
         {/* Mobile Menu Toggle */}
@@ -59,15 +83,26 @@ const Navbar = () => {
             <li><Link to="/user-dashboard">User Dashboard</Link></li>
             <li><Link to="/admin-dashboard">Admin Dashboard</Link></li>
 
-            <li>
-              <Link
-                to="/signin"
-                className="bg-amber-600 text-white px-10 py-2 rounded hover:bg-amber-800 transition"
-              >
-                Sign In
-              </Link>
-            </li>
-            
+            {/* Sign In / Sign Out only */}
+            {user ? (
+              <li>
+                <button
+                  onClick={signOutUser}
+                  className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition cursor-pointer"
+                >
+                  Sign Out
+                </button>
+              </li>
+            ) : (
+              <li>
+                <Link
+                  to="/signin"
+                  className="bg-amber-600 text-white px-5 py-2 rounded hover:bg-amber-700 transition"
+                >
+                  Sign In
+                </Link>
+              </li>
+            )}
           </motion.ul>
         )}
       </AnimatePresence>

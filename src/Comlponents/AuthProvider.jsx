@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStat
 import { useEffect, useState } from "react";
 import { createContext } from "react";
 import { app } from "../Firebase/firebase.init";
+import axios from 'axios';
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -36,19 +37,26 @@ const AuthProvider = ({ children }) => {
     return signOut(auth)
   }
 
-  //on auth stast change
-  useEffect(()=> {
-    const unSubscribe = onAuthStateChanged(auth, 
-      currentUser => {
+   // Auth State Observer + JWT Cookie Handling
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async currentUser => {
+      if (currentUser?.email) {
         setUser(currentUser);
-        setLoading(false)
-        console.log('user in the auth state change,', currentUser);
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/jwt`,
+          { email: currentUser.email },
+          { withCredentials: true }
+        );
+      } else {
+        setUser(null);
+        await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
+          withCredentials: true,
+        });
       }
-    )
-    return() => {
-      unSubscribe();
-    }
-  }, [])
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const authInfo = {
     createUser,

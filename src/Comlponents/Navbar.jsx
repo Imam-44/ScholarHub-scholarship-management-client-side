@@ -1,31 +1,59 @@
-import { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
-import { Menu, X } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
-import useAuth from '../hooks/useAuth'
+import { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import useAuth from '../hooks/useAuth';
+import useAxiosSecure from '../hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
+import { useEffect } from 'react';
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  const { user, signOutUser } = useAuth()
+  const [isOpen, setIsOpen] = useState(false);
+  const { user, signOutUser } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  const [userRole, setUserRole] = useState(null);
+
+  // Fetch user role
+  useEffect(() => {
+    if (user?.email) {
+      axiosSecure.get(`/users/role/${user.email}`)
+        .then((res) => setUserRole(res.data.role))
+        .catch((error) => console.error('Error fetching role:', error));
+    }
+  }, [user, axiosSecure]);
 
   const navLinkClass = ({ isActive }) =>
     isActive
       ? 'text-amber-600 border-b-4 border-amber-600 pb-1 font-semibold text-lg'
-      : 'hover:text-amber-600 transition'
+      : 'hover:text-amber-600 transition';
+
+  const handleSignOut = async () => {
+    try {
+      await signOutUser();
+      await axiosSecure.get('/logout');
+      localStorage.removeItem('token');
+      Swal.fire('Success', 'Logged out successfully', 'success');
+    } catch (error) {
+      Swal.fire('Error', 'Failed to log out', 'error');
+    }
+  };
 
   return (
-    <nav className="bg-white shadow-md px-6 py-4 relative z-50">
+    <nav className="bg-white shadow-md px-6 py-4 relative z-50" role="navigation" aria-label="Main navigation">
       <div className="w-11/12 max-w-screen-2xl mx-auto flex justify-between items-center">
         {/* Logo */}
-        <Link to="/" className="text-4xl font-bold text-amber-600">🎓ScholarX</Link>
+        <Link to="/" className="text-4xl font-bold text-amber-600" aria-label="ScholarX Home">🎓ScholarX</Link>
 
         {/* Desktop Menu */}
-        <ul className="hidden xl:flex items-center gap-6 text-gray-700 font-medium text-lg">
-          <li><NavLink to="/" className={navLinkClass}>Home</NavLink></li>
-          <li><NavLink to="/all-scholarship" className={navLinkClass}>All Scholarship</NavLink></li>
-          <li><NavLink to="/user-dashboard" className={navLinkClass}>User Dashboard</NavLink></li>
-          <li><NavLink to="/admin-dashboard" className={navLinkClass}>Admin Dashboard</NavLink></li>
-
+        <ul className="hidden md:flex items-center gap-6 text-gray-700 font-medium text-lg">
+          <li><NavLink to="/" className={navLinkClass} aria-label="Home">Home</NavLink></li>
+          <li><NavLink to="/all-scholarships" className={navLinkClass} aria-label="All Scholarships">All Scholarships</NavLink></li>
+          {user && (
+            <li><NavLink to="/dashboard/user" className={navLinkClass} aria-label="User Dashboard">User Dashboard</NavLink></li>
+          )}
+          {(userRole === 'admin' || userRole === 'moderator') && (
+            <li><NavLink to="/dashboard/admin" className={navLinkClass} aria-label="Admin Dashboard">Admin Dashboard</NavLink></li>
+          )}
           {user ? (
             <>
               {/* Profile Picture with Tooltip */}
@@ -33,18 +61,18 @@ const Navbar = () => {
                 <img
                   className="w-10 h-10 rounded-full border-2 border-amber-500 object-cover cursor-pointer"
                   src={user.photoURL}
-                  alt="User"
+                  alt="User profile"
+                  aria-label="User profile"
                 />
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 -mb-2 bg-amber-600 text-white px-3 py-1 rounded shadow-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-50">
+                <div className="hidden md:block absolute bottom-full left-1/2 -translate-x-1/2 -mb-2 bg-amber-600 text-white px-3 py-1 rounded shadow-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-50">
                   {user.displayName}
                 </div>
               </li>
-
-              {/* Sign Out Button */}
               <li>
                 <button
-                  onClick={signOutUser}
+                  onClick={handleSignOut}
                   className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition cursor-pointer"
+                  aria-label="Sign out"
                 >
                   Sign Out
                 </button>
@@ -55,6 +83,7 @@ const Navbar = () => {
               <Link
                 to="/signin"
                 className="bg-amber-600 text-white px-5 py-2 rounded hover:bg-amber-700 transition"
+                aria-label="Sign in"
               >
                 Sign In
               </Link>
@@ -63,7 +92,7 @@ const Navbar = () => {
         </ul>
 
         {/* Mobile Menu Toggle */}
-        <button className="xl:hidden cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+        <button className="md:hidden cursor-pointer" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
           {isOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
       </div>
@@ -76,19 +105,32 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25 }}
-            className="xl:hidden flex flex-col gap-4 px-6 pt-4 pb-6 bg-gray-100 text-gray-800 font-medium"
+            className="md:hidden flex flex-col gap-4 px-6 pt-4 pb-6 bg-gray-100 text-gray-800 font-medium"
           >
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/all-scholarship">All Scholarship</Link></li>
-            <li><Link to="/user-dashboard">User Dashboard</Link></li>
-            <li><Link to="/admin-dashboard">Admin Dashboard</Link></li>
-
-            {/* Sign In / Sign Out only */}
+            {user && (
+              <li className="flex items-center gap-2">
+                <img
+                  className="w-8 h-8 rounded-full border-2 border-amber-500 object-cover"
+                  src={user.photoURL}
+                  alt="User profile"
+                />
+                <span>{user.displayName}</span>
+              </li>
+            )}
+            <li><NavLink to="/" className={navLinkClass} aria-label="Home">Home</NavLink></li>
+            <li><NavLink to="/all-scholarships" className={navLinkClass} aria-label="All Scholarships">All Scholarships</NavLink></li>
+            {user && (
+              <li><NavLink to="/dashboard/user" className={navLinkClass} aria-label="User Dashboard">User Dashboard</NavLink></li>
+            )}
+            {(userRole === 'admin' || userRole === 'moderator') && (
+              <li><NavLink to="/dashboard/admin" className={navLinkClass} aria-label="Admin Dashboard">Admin Dashboard</NavLink></li>
+            )}
             {user ? (
               <li>
                 <button
-                  onClick={signOutUser}
+                  onClick={handleSignOut}
                   className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition cursor-pointer"
+                  aria-label="Sign out"
                 >
                   Sign Out
                 </button>
@@ -98,6 +140,7 @@ const Navbar = () => {
                 <Link
                   to="/signin"
                   className="bg-amber-600 text-white px-5 py-2 rounded hover:bg-amber-700 transition"
+                  aria-label="Sign in"
                 >
                   Sign In
                 </Link>
@@ -107,7 +150,7 @@ const Navbar = () => {
         )}
       </AnimatePresence>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

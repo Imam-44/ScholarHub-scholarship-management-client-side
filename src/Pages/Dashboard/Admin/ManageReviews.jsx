@@ -8,4 +8,4 @@ const ManageReviews = () => {
   );
 };
 
-export default ManageReviews;Common.jsx
+export default ManageReviews;

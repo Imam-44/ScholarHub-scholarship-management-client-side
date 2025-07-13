@@ -1,0 +1,67 @@
+import React from 'react';
+import { FaFacebookF, FaLinkedinIn, FaTwitter, FaInstagram, FaGraduationCap } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+
+const Footer = () => {
+  return (
+    <footer className="px-6 pt-8 md:px-16 lg:px-36 w-full text-gray-300 bg-gradient-to-r from-red-950 via-black to-red-950">
+      <div className="flex flex-col md:flex-row justify-between w-full gap-10 border-b border-gray-500 pb-10">
+        {/* Left side: logo & description */}
+        <div className="md:max-w-96">
+      <div className='flex gap-1'>
+         <FaGraduationCap className="text-2xl text-amber-500" size={40} />
+          <h1 className="text-3xl font-bold">ScholarHub</h1>
+      </div>
+          <p className="mt-6 text-sm">
+            ScholarHub is your one-stop solution for finding top scholarships worldwide with trusted reviews and secure applications.
+          </p>
+
+          {/* Social Icons */}
+          <div className="flex items-center gap-4 mt-6">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-amber-500">
+              <FaFacebookF />
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-amber-500">
+              <FaLinkedinIn />
+            </a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-amber-500">
+              <FaTwitter />
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-amber-500">
+              <FaInstagram />
+            </a>
+          </div>
+        </div>
+
+        {/* Right side: menu */}
+        <div className="flex-1 flex items-start md:justify-end gap-20 md:gap-40">
+          <div>
+            <h2 className="font-semibold mb-5">Quick Links</h2>
+            <ul className="text-sm space-y-2">
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/all-scholarship">All Scholarships</Link></li>
+              <li><Link to="/dashboard">Dashboard</Link></li>
+              <li><Link to="/reviews">Reviews</Link></li>
+              <li><Link to="/contact">Contact</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="font-semibold mb-5">Get in Touch</h2>
+            <div className="text-sm space-y-2">
+              <p>+880-1234-567890</p>
+              <p>support@scholarhub.com</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom copyright */}
+      <p className="pt-4 text-center text-sm pb-5">
+        © {new Date().getFullYear()} ScholarHub. All Rights Reserved.
+      </p>
+    </footer>
+  );
+};
+
+export default Footer;

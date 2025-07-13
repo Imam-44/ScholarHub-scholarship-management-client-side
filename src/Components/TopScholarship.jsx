@@ -7,7 +7,7 @@ const TopScholarships = () => {
   const [scholarships, setScholarships] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/top-scholarship')
+    axios.get(`${import.meta.env.VITE_API_URL}/top-scholarship`)
       .then(res => setScholarships(res.data))
       .catch(err => console.error(err));
   }, []);
@@ -49,7 +49,7 @@ const TopScholarships = () => {
       </div>
 
       <div className="flex justify-center mt-10">
-        <Link to="/all-scholarships">
+        <Link to="/all-scholarship">
           <button className="px-6 py-4 bg-red-950/90 text-white font-semibold rounded-lg hover:bg-amber-900 transition cursor-pointer">
             View All Scholarships
           </button>

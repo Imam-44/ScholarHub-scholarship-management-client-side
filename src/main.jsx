@@ -4,9 +4,10 @@ import './index.css'
 import App from './App.jsx'
 import { RouterProvider } from 'react-router'
 import router from './router/route.jsx'
-import AuthProvider from './Comlponents/AuthProvider.jsx'
+
 import { Toaster } from 'react-hot-toast'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import AuthProvider from './Components/AuthProvider.jsx'
 
 const queryClient = new QueryClient();
 

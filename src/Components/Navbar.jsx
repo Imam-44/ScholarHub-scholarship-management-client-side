@@ -39,13 +39,13 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-md px-6 py-4 relative z-50" role="navigation" aria-label="Main navigation">
+    <nav className="bg-gradient-to-r from-red-950 via-black to-red-900 shadow-md px-6 py-4 relative z-50" role="navigation" aria-label="Main navigation">
       <div className="w-11/12 max-w-screen-2xl mx-auto flex justify-between items-center">
         {/* Logo */}
-        <Link to="/" className="text-4xl font-bold text-amber-600" aria-label="ScholarX Home">🎓ScholarX</Link>
+        <Link to="/" className="text-4xl font-bold text-white/80" aria-label="ScholarX Home">🎓ScholarX</Link>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex items-center gap-6 text-gray-700 font-medium text-lg">
+        <ul className="hidden md:flex items-center gap-6 text-white font-medium text-lg">
           <li><NavLink to="/" className={navLinkClass} aria-label="Home">Home</NavLink></li>
           <li><NavLink to="/all-scholarships" className={navLinkClass} aria-label="All Scholarships">All Scholarships</NavLink></li>
           {user && (

@@ -14,7 +14,7 @@ const TopScholarships = () => {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto my-12 px-4">
+    <div className="max-w-9xl mx-auto my-12 px-4">
       <div className="text-center max-w-3xl mx-auto my-20">
         <h2 className="text-4xl font-bold text-black mb-2"><MdSchool className="inline text-black mr-2" size={40} /> Top Scholarships for You</h2>
         <p className="text-gray-700/90 text-md">
@@ -30,7 +30,7 @@ const TopScholarships = () => {
 
       <div className="flex justify-center mt-10">
         <Link to="/all-scholarship">
-          <button className="px-6 py-4 bg-red-950/90 text-white font-semibold rounded-lg hover:bg-amber-900 transition cursor-pointer">
+          <button className="px-6 py-4 bg-gradient-to-r from-amber-600 to-red-900  hover:from-red-950 hover:to-red-900 shadow hover:shadow-lg shadow-red-950 transition duration-300 cursor-pointer text-white font-semibold rounded-lg   ">
             View All Scholarships
           </button>
         </Link>

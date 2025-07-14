@@ -49,7 +49,7 @@ const AllScholarships = () => {
         />
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          className="bg-gradient-to-r from-amber-500 to-amber-700  hover:from-red-950 hover:to-red-900 shadow hover:shadow-md shadow-red-950 transition duration-300 cursor-pointer text-white px-4 py-2.5 rounded-md"
         >
           <FaSearch />
         </button>
@@ -63,7 +63,7 @@ const AllScholarships = () => {
       {scholarships.length > 0 ? (
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
           {scholarships.map((scholarship) => (
-            <ScholarshipCard key={scholarship._id} scholarship={scholarship}/>
+            <ScholarshipCard key={scholarship._id} scholarship={scholarship} />
 
           ))}
         </div>
@@ -76,6 +76,17 @@ const AllScholarships = () => {
               className="w-60 mx-auto mb-4"
             />
             <p className="text-gray-500 text-lg">No scholarships found for your search.</p>
+
+            {/* Back Button */}
+            <button
+              onClick={() => {
+                setQuery('');
+                setSearchText('');
+              }}
+              className="bg-gradient-to-r from-amber-500 to-amber-700  hover:from-red-950 hover:to-red-900 shadow hover:shadow-lg shadow-red-950 transition duration-300 cursor-pointer text-white px-6 py-2 rounded-lg "
+            >
+              See All Scholarship
+            </button>
           </div>
         )
       )}

@@ -30,7 +30,7 @@ const Hero = () => {
                   Get a full scholarship covering your entire tuition fee and join world-class institutions without any cost.
                 </p>
                 <button
-                  className="mt-6 bg-amber-600 text-white px-6 py-2.5 rounded-full text-sm font-medium flex items-center space-x-2 hover:bg-amber-700 transition"
+                  className="mt-6 bg-amber-600 text-white px-6 py-2.5 rounded-full text-sm font-medium flex items-center space-x-2 hover:bg-amber-700 transition cursor-pointer"
                   type="button"
                 >
                   <span>Read Success Stories</span>
@@ -62,7 +62,7 @@ const Hero = () => {
                   Apply for prestigious global scholarships and get admitted to the top-ranked universities around the world today.
                 </p>
                 <button
-                  className="mt-6 bg-amber-600 text-white px-6 py-2.5 rounded-full text-sm font-medium flex items-center space-x-2 hover:bg-amber-700 transition"
+                  className="mt-6 bg-amber-600 hover:bg-amber-800 text-white px-6 py-2.5 rounded-full text-sm font-medium flex items-center space-x-2  transition cursor-pointer"
                   type="button"
                 >
                   <span>Read Success Stories</span>
@@ -94,7 +94,7 @@ const Hero = () => {
                   Enhance your career with combined internship and scholarship programs offered by international academic partners.
                 </p>
                 <button
-                  className="mt-6 bg-amber-600 text-white px-6 py-2.5 rounded-full text-sm font-medium flex items-center space-x-2 hover:bg-amber-700 transition"
+                  className="mt-6 bg-amber-600 text-white px-6 py-2.5 rounded-full text-sm font-medium flex items-center space-x-2 hover:bg-amber-700 transition cursor-pointer"
                   type="button"
                 >
                   <span>Read Success Stories</span>

@@ -48,7 +48,7 @@ const ScholarshipDetails = () => {
               <p><strong>Description:</strong> {scholarship.description}</p>
           </div>
 
-          <button className="mt-4 inline-block bg-gradient-to-r from-amber-500 to-amber-700 text-white px-6 py-2 rounded-xl shadow hover:shadow-lg transition duration-300 cursor-pointer">
+          <button className="mt-4 inline-block bg-gradient-to-r from-amber-500 to-amber-700  hover:from-red-950 hover:to-red-900 text-white px-6 py-2 rounded-xl shadow hover:shadow-lg shadow-red-950 transition duration-300 cursor-pointer">
             Apply for Scholarship
           </button>
         </div>

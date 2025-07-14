@@ -9,8 +9,8 @@ const Footer = () => {
         {/* Left side: logo & description */}
         <div className="md:max-w-96">
       <div className='flex gap-1'>
-         <FaGraduationCap className="text-2xl text-amber-500" size={40} />
-          <h1 className="text-3xl font-bold">ScholarHub</h1>
+         
+          <h1 className="text-4xl font-bold">🎓ScholarHub</h1>
       </div>
           <p className="mt-6 text-sm">
             ScholarHub is your one-stop solution for finding top scholarships worldwide with trusted reviews and secure applications.

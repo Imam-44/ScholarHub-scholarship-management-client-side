@@ -47,7 +47,7 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <ul className="hidden md:flex items-center gap-6 text-white font-medium text-lg">
           <li><NavLink to="/" className={navLinkClass} aria-label="Home">Home</NavLink></li>
-          <li><NavLink to="/all-scholarships" className={navLinkClass} aria-label="All Scholarships">All Scholarships</NavLink></li>
+          <li><NavLink to="/all-scholarships" className={navLinkClass} aria-label="all-scholarship">All Scholarships</NavLink></li>
           {user && (
             <li><NavLink to="/dashboard/user" className={navLinkClass} aria-label="User Dashboard">User Dashboard</NavLink></li>
           )}

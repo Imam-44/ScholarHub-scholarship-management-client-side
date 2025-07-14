@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { MdSchool } from 'react-icons/md';
+import ScholarshipCard from './ScholarshipCard';
 
 const TopScholarships = () => {
   const [scholarships, setScholarships] = useState([]);
@@ -22,29 +23,8 @@ const TopScholarships = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {scholarships.map(sch => (
-          <div
-            key={sch._id}
-            className="bg-red-950 text-white rounded-2xl shadow-lg hover:shadow-red-950/70 transition duration-300 p-6 border border-red-900"
-          >
-            <div className="flex justify-center mb-4">
-              <img
-                src={sch.universityLogo}
-                alt="University Logo"
-                className="h-400px w-auto object-cover rounded-md bg-amber-600 p-2"
-              />
-            </div>
-
-            <h3 className="text-xl font-semibold text-center">{sch.scholarshipName}</h3>
-            <p className="text-center text-amber-100 mb-1">{sch.universityName}, {sch.universityCity}</p>
-            <p className="text-sm text-center text-amber-200">{sch.degree} • {sch.subjectCategory}</p>
-
-            <div className="mt-4 text-center space-y-1 text-sm">
-              <p><span className="font-semibold">Stipend:</span> {sch.stipend}</p>
-              <p><span className="font-semibold">App. Fee:</span> ${sch.applicationFees}</p>
-              <p><span className="font-semibold">Deadline:</span> {sch.applicationDeadline}</p>
-            </div>
-          </div>
+        {scholarships.map(scholarship => (
+           <ScholarshipCard key={scholarship._id} scholarship={scholarship} />
         ))}
       </div>
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import Hero from '../Components/Hero';
 import TopScholarships from '../Components/TopScholarship';
-import Hi from '../Components/Hi';
 import StudentSuccessStories from '../Components/StudentSuccessStories';
 import CoreFeatures from '../Components/CoreFeatures';
 

@@ -3,13 +3,11 @@ import HomeLayouts from "../Layouts/HomeLayouts";
 import Home from "../Pages/Home";
 import SignIn from "../Pages/SignIn";
 import SignUp from "../Pages/SignUp";
-import AllSholership from "../Pages/AllSholership";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../Layouts/DashboardLayout";
 import ManageApplications from "../Pages/Dashboard/Admin/ManageApplications";
 import ManageReviews from "../Pages/Dashboard/Admin/ManageReviews";
 import ManageUsers from "../Pages/Dashboard/Admin/ManageUsers";
-import { MdAnalytics } from "react-icons/md";
 import AllApplication from "../Pages/Dashboard/ModeratorDashboard/AllApplication";
 import AllReviews from "../Pages/Dashboard/ModeratorDashboard/AllReviews";
 import MyApplication from "../Pages/Dashboard/UserDashboard/MyApplication";
@@ -17,6 +15,8 @@ import MyReviews from "../Pages/Dashboard/UserDashboard/MyReviews";
 import AddScholarship from "../Pages/Dashboard/Common/AddScholarship";
 import ManageScholarships from "../Pages/Dashboard/Common/ManageScholarships";
 import MyProfile from "../Pages/Dashboard/Common/MyProfile";
+import ScholarshipDetails from "../Pages/ScholarshipDetails";
+import AllScholarships from "../Pages/AllSholerships";
 
 const router = createBrowserRouter([
   {
@@ -28,8 +28,16 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: '/all-scholarship',
-        Component: AllSholership
+        path: '/all-scholarships',
+        Component: AllScholarships
+      },
+      {
+        path: '/scholarship/:id',
+        element: 
+          <PrivateRoute>
+             <ScholarshipDetails/>
+          </PrivateRoute>
+        
       }
     ]
   },

@@ -34,29 +34,30 @@ const AuthProvider = ({ children }) => {
   //sign out user
   const signOutUser = () => {
     setLoading(true);
+    localStorage.removeItem('access-token');
     return signOut(auth)
   }
 
    // Auth State Observer + JWT Cookie Handling
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async currentUser => {
-      if (currentUser?.email) {
-        setUser(currentUser);
-        await axios.post(
-          `${import.meta.env.VITE_API_URL}/jwt`,
-          { email: currentUser.email },
-          { withCredentials: true }
-        );
-      } else {
-        setUser(null);
-        await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
-          withCredentials: true,
-        });
-      }
-      setLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, async currentUser => {
+    if (currentUser?.email) {
+      setUser(currentUser);
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/jwt`,
+        { email: currentUser.email }
+      );
+      localStorage.setItem('access-token', res.data.token);
+    } else {
+      setUser(null);
+      localStorage.removeItem('access-token'); 
+    }
+    setLoading(false);
+  });
+
+  return () => unsubscribe();
+}, []);
+
 
   const authInfo = {
     createUser,
@@ -64,7 +65,8 @@ const AuthProvider = ({ children }) => {
     signInWithGoogle,
     user,
     signOutUser,
-    setUser
+    setUser,
+    loading
   };
 
   return(

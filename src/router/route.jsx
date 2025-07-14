@@ -11,6 +11,7 @@ import MyApplications from "../Dashboard/MyApplication";
 import MyReviews from "../Dashboard/MyReviews";
 import MyProfile from "../Dashboard/MyProfile";
 import Dashboard from "../Dashboard/Dashboard";
+import CheckoutPage from "../Pages/CheckoutPage";
 
 const router = createBrowserRouter([
   {
@@ -32,7 +33,11 @@ const router = createBrowserRouter([
              <ScholarshipDetails/>
           </PrivateRoute>
         
-      }
+      },
+      {
+        path: '/checkout/:id',
+        element: <CheckoutPage/>
+      } 
     ]
   },
   {

@@ -46,7 +46,7 @@ const ScholarshipCard = ({ scholarship }) => {
       {/* View Details Button */}
       <div className="text-center mt-5">
         <Link to={`/scholarship/${scholarship._id}`}>
-          <button className="px-5 py-2 bg-gradient-to-r from-amber-500 to-amber-700 hover:from-amber-600 hover:to-red-800 text-white rounded-xl shadow-lg hover:shadow-red-500/60 transition duration-300">
+          <button className="px-5 py-2 bg-gradient-to-r from-amber-500 to-amber-700 hover:from-amber-600 hover:to-red-800 text-white rounded-xl shadow-lg hover:shadow-red-500/60 transition duration-300 cursor-pointer">
             View Details
           </button>
         </Link>

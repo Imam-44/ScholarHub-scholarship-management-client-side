@@ -48,12 +48,9 @@ const Navbar = () => {
         <ul className="hidden md:flex items-center gap-6 text-white font-medium text-lg">
           <li><NavLink to="/" className={navLinkClass} aria-label="Home">Home</NavLink></li>
           <li><NavLink to="/all-scholarships" className={navLinkClass} aria-label="all-scholarship">All Scholarships</NavLink></li>
-          {user && (
-            <li><NavLink to="/dashboard/user" className={navLinkClass} aria-label="User Dashboard">User Dashboard</NavLink></li>
-          )}
-          {(userRole === 'admin' || userRole === 'moderator') && (
-            <li><NavLink to="/dashboard/admin" className={navLinkClass} aria-label="Admin Dashboard">Admin Dashboard</NavLink></li>
-          )}
+          
+          <li><Link to={'/dashboard'}>Dashboard</Link></li>
+     
           {user ? (
             <>
               {/* Profile Picture with Tooltip */}
@@ -119,12 +116,12 @@ const Navbar = () => {
             )}
             <li><NavLink to="/" className={navLinkClass} aria-label="Home">Home</NavLink></li>
             <li><NavLink to="/all-scholarships" className={navLinkClass} aria-label="All Scholarships">All Scholarships</NavLink></li>
-            {user && (
+            {/* {user && (
               <li><NavLink to="/dashboard/user" className={navLinkClass} aria-label="User Dashboard">User Dashboard</NavLink></li>
             )}
             {(userRole === 'admin' || userRole === 'moderator') && (
               <li><NavLink to="/dashboard/admin" className={navLinkClass} aria-label="Admin Dashboard">Admin Dashboard</NavLink></li>
-            )}
+            )} */}
             {user ? (
               <li>
                 <button

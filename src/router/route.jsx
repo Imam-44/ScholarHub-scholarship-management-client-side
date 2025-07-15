@@ -19,6 +19,7 @@ import MyProfile from "../Dashboard/UserDashboard/MyProfile";
 import ManageScholarships from "../Dashboard/ModeratorDashboard/ManageScholarships ";
 import AllReviews from "../Dashboard/ModeratorDashboard/AllReviews";
 import AllAppliedScholarships from "../Dashboard/ModeratorDashboard/AllAppliedScholarships";
+import AddScholarship from "../Dashboard/ModeratorDashboard/AddScholarship";
 
 const router = createBrowserRouter([
   {
@@ -102,6 +103,10 @@ const router = createBrowserRouter([
       {
         path: 'all-applied-scholarships',
         element: <AllAppliedScholarships/>
+      },
+      {
+        path: 'add-scholarship',
+        element: <AddScholarship/>
       }
     ]
   },

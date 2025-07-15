@@ -75,7 +75,10 @@ const CheckoutForm = ({ scholarship }) => {
     if (paymentIntent.status === 'succeeded') {
       const application = {
         ...formData,
+      
         universityName: scholarship.universityName,
+        universityCountry: scholarship.universityCountry,
+        universityCity: scholarship.universityCity,
         scholarshipCategory: scholarship.scholarshipCategory,
         subjectCategory: scholarship.subjectCategory,
         userName: user.displayName,

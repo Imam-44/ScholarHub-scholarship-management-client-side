@@ -8,10 +8,11 @@ import {
   FaCalendarAlt,
   FaShieldAlt,
 } from 'react-icons/fa';
-import useAuth from '../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
+
 
 const MyProfile = () => {
-  const { user } = useAuth();
+  const { user } = useAuth() 
 
   const cards = [
     {

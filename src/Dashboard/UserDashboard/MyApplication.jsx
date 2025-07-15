@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import useAuth from '../hooks/useAuth';
-import useAxiosSecure from '../hooks/useAxiosSecure';
+import useAuth from '../../hooks/useAuth';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useNavigate } from 'react-router-dom';
 
 const MyApplications = () => {
@@ -32,7 +32,7 @@ const MyApplications = () => {
   }, [user?.email, axiosSecure]);
 
   const handleEdit = (application) => {
-    if (application.applicationStatus !== 'pending') {
+    if (application.status !== 'pending') {
       Swal.fire(
         'Cannot Edit',
         'You cannot edit the application because it is processing or completed.',
@@ -40,7 +40,7 @@ const MyApplications = () => {
       );
       return;
     }
-    navigate(`/applications/edit/${application._id}`);
+    navigate(`/dashboard/applications/edit/${application._id}`);
   };
 
   const handleCancel = (id) => {
@@ -53,13 +53,13 @@ const MyApplications = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure
-          .put(`/applications/cancel/${id}`)
+          .delete(`/cancel-application/${id}`)
           .then((res) => {
-            if (res.data.success) {
+            if (res.data.deletedCount > 0) {
               Swal.fire('Canceled!', 'Your application has been canceled.', 'success');
               setApplications((prev) =>
                 prev.map((app) =>
-                  app._id === id ? { ...app, applicationStatus: 'rejected' } : app
+                  app._id === id ? { ...app, status: 'rejected' } : app
                 )
               );
             } else {
@@ -73,12 +73,14 @@ const MyApplications = () => {
     });
   };
 
+
   const handleDetails = (application) => {
-    navigate(`/applications/details/${application._id}`);
+    navigate(`/dashboard/applications/details/${application._id}`);
   };
 
   const handleAddReview = (application) => {
-    navigate(`/applications/review/${application._id}`);
+    navigate(`/dashboard/applications/review/${application._id}`);
+
   };
 
   if (loading) return <p className="text-center mt-10 text-lg font-semibold">Loading your applications...</p>;
@@ -109,7 +111,12 @@ const MyApplications = () => {
               {applications.map((app, idx) => (
                 <tr key={app._id} className={idx % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
                   <td className="px-4 py-3">{app.universityName || 'N/A'}</td>
-                  <td className="px-4 py-3">{app.address || 'N/A'}</td>
+                  <td className="px-4 py-3">
+                    {app.universityCountry && app.universityCity
+                      ? `${app.universityCountry}, ${app.universityCity}`
+                      : 'N/A'}
+                  </td>
+
                   <td className="px-4 py-3">{app.applicationFeedback || 'No feedback yet'}</td>
                   <td className="px-4 py-3">{app.subjectCategory || 'N/A'}</td>
                   <td className="px-4 py-3">{app.degree || 'N/A'}</td>

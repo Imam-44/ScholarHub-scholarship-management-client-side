@@ -18,6 +18,7 @@ import ReviewForm from "../Dashboard/UserDashboard/ReviewForm";
 import MyProfile from "../Dashboard/UserDashboard/MyProfile";
 import ManageScholarships from "../Dashboard/ModeratorDashboard/ManageScholarships ";
 import AllReviews from "../Dashboard/ModeratorDashboard/AllReviews";
+import AllAppliedScholarships from "../Dashboard/ModeratorDashboard/AllAppliedScholarships";
 
 const router = createBrowserRouter([
   {
@@ -97,6 +98,10 @@ const router = createBrowserRouter([
       {
         path: 'all-reviews',
         element: <AllReviews />
+      },
+      {
+        path: 'all-applied-scholarships',
+        element: <AllAppliedScholarships/>
       }
     ]
   },

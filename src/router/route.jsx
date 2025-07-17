@@ -15,11 +15,14 @@ import CheckoutPage from "../Pages/CheckoutPage";
 import ApplicationDetails from "../Dashboard/UserDashboard/ApplicationDetails ";
 import EditApplication from "../Dashboard/UserDashboard/EditApplication";
 import ReviewForm from "../Dashboard/UserDashboard/ReviewForm";
-import MyProfile from "../Dashboard/UserDashboard/MyProfile";
-import ManageScholarships from "../Dashboard/ModeratorDashboard/ManageScholarships ";
-import AllReviews from "../Dashboard/ModeratorDashboard/AllReviews";
-import AllAppliedScholarships from "../Dashboard/ModeratorDashboard/AllAppliedScholarships";
-import AddScholarship from "../Dashboard/ModeratorDashboard/AddScholarship";
+import MyProfile from "../Dashboard/Common/MyProfile";
+
+import AllReviews from "../Dashboard/Common/AllReviews";
+import AllAppliedScholarships from "../Dashboard/Common/AllAppliedScholarships";
+import AddScholarship from "../Dashboard/Common/AddScholarship";
+import ManageUsers from "../Dashboard/AdminDashboard.jsx/ManageUsers ";
+import ManageScholarships from "../Dashboard/Common/ManageScholarships ";
+
 
 const router = createBrowserRouter([
   {
@@ -87,6 +90,7 @@ const router = createBrowserRouter([
       {
         path: 'my-reviews',
         element: <MyReviews />
+       
       },
       {
         path: 'my-profile',
@@ -107,7 +111,12 @@ const router = createBrowserRouter([
       {
         path: 'add-scholarship',
         element: <AddScholarship/>
-      }
+      },
+      {
+        path: 'manage-users',
+        element: <ManageUsers/>
+      },
+  
     ]
   },
 

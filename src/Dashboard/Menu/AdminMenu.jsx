@@ -10,7 +10,7 @@ const AdminMenu = () => {
         <h3 className="text-sm text-gray-400 uppercase mb-2">Admin</h3>
         <ul className="space-y-2">
           <li>
-            <Link to="/dashboard/admin-profile" className="flex items-center gap-3 hover:bg-gray-700 px-3 py-2 rounded-xl">
+            <Link to="/dashboard/my-profile" className="flex items-center gap-3 hover:bg-gray-700 px-3 py-2 rounded-xl">
               <MdAdminPanelSettings /> Admin Profile
             </Link>
           </li>
@@ -20,7 +20,7 @@ const AdminMenu = () => {
             </Link>
           </li>
           <li>
-            <Link to="/dashboard/manage-applications" className="flex items-center gap-3 hover:bg-gray-700 px-3 py-2 rounded-xl">
+            <Link to="/dashboard/all-applied-scholarships" className="flex items-center gap-3 hover:bg-gray-700 px-3 py-2 rounded-xl">
               <FaTasks /> Manage Applications
             </Link>
           </li>
@@ -30,7 +30,7 @@ const AdminMenu = () => {
             </Link>
           </li>
           <li>
-            <Link to="/dashboard/manage-reviews" className="flex items-center gap-3 hover:bg-gray-700 px-3 py-2 rounded-xl">
+            <Link to="/dashboard/all-reviews" className="flex items-center gap-3 hover:bg-gray-700 px-3 py-2 rounded-xl">
               <MdReviews /> Manage Reviews
             </Link>
           </li>

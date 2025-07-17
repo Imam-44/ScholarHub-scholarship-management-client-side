@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { FaEdit, FaEye, FaTrash } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
-import EditScholarshipModal from './EditScholarshipModal ';
+import EditScholarshipModal from '../ModeratorDashboard/EditScholarshipModal ';
+
 
 
 const ManageScholarships = () => {

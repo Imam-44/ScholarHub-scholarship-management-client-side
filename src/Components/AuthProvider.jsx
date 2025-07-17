@@ -38,19 +38,56 @@ const AuthProvider = ({ children }) => {
     return signOut(auth)
   }
 
+    // Fetch role from DB
+const fetchUserRole = async (email) => {
+  try {
+    const res = await axiosSecure.get(`/users/role/${email}`);
+    return res.data.role || 'user'; // Default fallback
+  } catch (error) {
+    console.error('Error fetching role:', error.message);
+    return 'user';
+  }
+};
+
+
    // Auth State Observer + JWT Cookie Handling
 useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, async currentUser => {
+  const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
     if (currentUser?.email) {
-      setUser(currentUser);
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/jwt`,
-        { email: currentUser.email }
-      );
-      localStorage.setItem('access-token', res.data.token);
+      try {
+        // 1. Get JWT token
+        const res = await axios.post(
+          `${import.meta.env.VITE_API_URL}/jwt`,
+          { email: currentUser.email }
+        );
+        const token = res.data.token;
+        localStorage.setItem('access-token', token);
+
+        // 2. Create secure axios instance with token
+        const axiosSecure = axios.create({
+          baseURL: import.meta.env.VITE_API_URL,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // 3. Get role from DB
+        const roleRes = await axiosSecure.get(`/users/role/${currentUser.email}`);
+        const role = roleRes.data?.role || 'user';
+
+        // 4. Set user with role
+        setUser({
+          ...currentUser,
+          role,
+        });
+
+      } catch (error) {
+        console.error("Auth setup error:", error.message);
+        setUser(currentUser); // fallback: set without role
+      }
     } else {
       setUser(null);
-      localStorage.removeItem('access-token'); 
+      localStorage.removeItem('access-token');
     }
     setLoading(false);
   });

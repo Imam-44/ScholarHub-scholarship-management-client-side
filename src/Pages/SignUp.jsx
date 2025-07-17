@@ -1,12 +1,30 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getAuth, updateProfile } from 'firebase/auth';
+import { updateProfile } from 'firebase/auth';
 import Swal from 'sweetalert2';
 import useAuth from '../hooks/useAuth';
+import axios from 'axios';
+import { FaGoogle } from 'react-icons/fa';
 
 const SignUp = () => {
-  const { createUser, setUser } = useAuth();
+  const { createUser, signInWithGoogle, setUser } = useAuth();
   const navigate = useNavigate();
+
+const saveUserToDB = async (user) => {
+  const userData = {
+    name: user.displayName,
+    email: user.email,
+    photoURL: user.photoURL,
+    lastLogin: new Date().toISOString(), 
+  };
+
+  try {
+    await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
+  } catch (err) {
+    console.error('Failed to save user:', err.message);
+  }
+};
+
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -25,7 +43,10 @@ const SignUp = () => {
         photoURL: photoUrl,
       });
 
-      setUser({ ...createdUser, displayName: name, photoURL: photoUrl });
+      const updatedUser = { ...createdUser, displayName: name, photoURL: photoUrl };
+      setUser(updatedUser);
+
+      await saveUserToDB(updatedUser);
 
       Swal.fire({
         icon: 'success',
@@ -42,6 +63,18 @@ const SignUp = () => {
         title: 'Oops...',
         text: error.message,
       });
+    }
+  };
+
+  const handleGoogleSignUp = async () => {
+    try {
+      const result = await signInWithGoogle();
+      const user = result.user;
+      await saveUserToDB(user);
+      Swal.fire('Success', 'Signed in with Google!', 'success');
+      navigate('/');
+    } catch (error) {
+      Swal.fire('Error', error.message, 'error');
     }
   };
 
@@ -109,9 +142,18 @@ const SignUp = () => {
           </div>
         </form>
 
+        {/* Google Login */}
+        <button
+          onClick={handleGoogleSignUp}
+          className="w-full flex justify-center items-center border border-amber-400 py-2 rounded-md hover:bg-amber-100 transition"
+        >
+          <FaGoogle className="text-amber-600 mr-2" />
+          Sign up with Google
+        </button>
+
         <p className="text-center text-sm text-gray-600">
           Already have an account?
-          <Link to="/sign-in" className="text-amber-600 font-semibold ml-1 hover:underline">
+          <Link to="/signin" className="text-amber-600 font-semibold ml-1 hover:underline">
             Sign In here
           </Link>
         </p>

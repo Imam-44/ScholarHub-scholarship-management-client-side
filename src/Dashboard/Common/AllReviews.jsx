@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { FaTrashAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 
@@ -8,65 +7,73 @@ const AllReviews = () => {
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
-    axiosSecure.get('/reviews') // Ensure this route returns all reviews
-      .then(res => setReviews(res.data))
-      .catch(err => {
-        console.error(err);
-        Swal.fire('Error', 'Failed to load reviews', 'error');
-      });
+    axiosSecure.get('/reviews').then(res => setReviews(res.data));
   }, [axiosSecure]);
 
-  const handleDelete = id => {
+  const handleDelete = (id) => {
     Swal.fire({
       title: 'Are you sure?',
       text: 'You want to delete this review?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-    }).then(result => {
+      confirmButtonColor: '#b91c1c',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, Delete it!'
+    }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure.delete(`/reviews/${id}`)
-          .then(() => {
-            setReviews(prev => prev.filter(r => r._id !== id));
-            Swal.fire('Deleted!', 'Review has been deleted.', 'success');
-          })
-          .catch(() => Swal.fire('Error', 'Failed to delete review', 'error'));
+        axiosSecure.delete(`/reviews/admin/${id}`).then(() => {
+          setReviews(prev => prev.filter(review => review._id !== id));
+          Swal.fire('Deleted!', 'Review has been removed.', 'success');
+        });
       }
     });
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold text-center text-indigo-700 mb-8">📝 All Reviews</h2>
+    <div className="p-6">
+      <h2 className="text-3xl font-bold mb-6 text-center text-red-950">🗂️ All Reviews</h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {reviews.map(review => (
-          <div key={review._id} className="bg-white shadow-lg rounded-lg p-5 border relative">
-            <div className="mb-2">
-              <h3 className="text-xl font-semibold text-indigo-800">{review.universityName}</h3>
-              <p className="text-sm text-gray-500">{review.subjectCategory || 'N/A'}</p>
-            </div>
-            <div className="flex items-center gap-3 mt-2">
-              <img src={review.reviewerImage} alt="Reviewer" className="w-10 h-10 rounded-full border" />
-              <div>
-                <p className="font-semibold">{review.reviewerName}</p>
-                <p className="text-xs text-gray-500">{new Date(review.date).toLocaleDateString()}</p>
-              </div>
-            </div>
-            <div className="mt-3 text-sm">
-              <p className="text-yellow-600 font-semibold">⭐ Rating: {review.rating}/5</p>
-              <p className="mt-2 text-gray-700 italic">"{review.reviewText}"</p>
-            </div>
-            <button
-              onClick={() => handleDelete(review._id)}
-              className="absolute top-3 right-3 text-red-600 hover:text-red-800"
-              title="Delete Review"
+      {reviews.length === 0 ? (
+        <p className="text-center text-gray-500">No reviews available.</p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {reviews.map((review) => (
+            <div
+              key={review._id}
+              className="bg-white rounded-lg shadow-md p-5 border border-gray-200 hover:shadow-lg transition-all duration-200"
             >
-              <FaTrashAlt />
-            </button>
-          </div>
-        ))}
-      </div>
+              <div className="mb-3">
+                <h3 className="text-lg font-bold text-red-950">{review.universityName}</h3>
+                <p className="text-sm text-gray-600">🎓 {review.subjectCategory}</p>
+              </div>
+
+              <div className="flex items-center gap-3 my-4">
+                <img
+                  src={review.reviewerImage || '/default-avatar.png'}
+                  alt="Reviewer"
+                  className="w-10 h-10 rounded-full border"
+                />
+                <div>
+                  <p className="font-semibold text-red-950">{review.reviewerName}</p>
+                  <p className="text-xs text-gray-500">{new Date(review.date).toLocaleDateString()}</p>
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <p className="text-yellow-600 font-semibold">⭐ Rating: {review.rating}</p>
+                <p className="text-sm mt-2 text-gray-700">💬 {review.comment}</p>
+              </div>
+
+              <button
+                onClick={() => handleDelete(review._id)}
+                className="mt-4 bg-red-950 hover:bg-red-800 text-white py-1 px-4 rounded text-sm font-semibold transition-all"
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

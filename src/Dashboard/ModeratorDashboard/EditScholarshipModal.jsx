@@ -53,7 +53,7 @@ const EditScholarshipModal = ({ scholarship, onClose, onUpdate }) => {
           />
           <input
             className="w-full border p-2 rounded"
-            name="scholarshipCategory"
+            name="subjectCategory"
             value={formData.subjectCategory}
             onChange={handleChange}
             placeholder="Category"

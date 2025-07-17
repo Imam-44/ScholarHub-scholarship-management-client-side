@@ -1,105 +1,106 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
-
-import { FaEdit, FaTrash } from 'react-icons/fa';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAuth from '../../hooks/useAuth';
 
 const MyReviews = () => {
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const {user } = useAuth()
   const [reviews, setReviews] = useState([]);
   const [editingReview, setEditingReview] = useState(null);
-  const [formData, setFormData] = useState({
-    reviewText: '',
-    rating: ''
-  });
+  const [editData, setEditData] = useState({});
 
   useEffect(() => {
-    axiosSecure.get(`/my-reviews/${user.email}`).then(res => {
-      setReviews(res.data);
-    });
-  }, [axiosSecure]);
+    if (user?.email) {
+      axiosSecure.get(`/my-reviews/${user.email}`).then(res => setReviews(res.data));
+    }
+  }, [user, axiosSecure]);
 
-  const handleDelete = id => {
+  const handleDelete = (id) => {
     Swal.fire({
       title: 'Are you sure?',
-      text: "You want to delete this review?",
+      text: 'You are about to delete this review.',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonColor: '#b91c1c', // red-950
+      confirmButtonText: 'Yes, delete it!',
     }).then(result => {
       if (result.isConfirmed) {
         axiosSecure.delete(`/reviews/${id}`).then(() => {
-          setReviews(prev => prev.filter(r => r._id !== id));
+          setReviews(reviews.filter(review => review._id !== id));
           Swal.fire('Deleted!', 'Your review has been deleted.', 'success');
         });
       }
     });
   };
 
-  const openEditModal = review => {
+  const handleEditClick = (review) => {
     setEditingReview(review);
-    setFormData({ reviewText: review.reviewText, rating: review.rating });
-    document.getElementById('edit-modal').showModal();
+    setEditData({ ...review });
   };
 
-  const handleFormChange = e => {
+  const handleEditChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setEditData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleEditSubmit = e => {
+  const handleEditSubmit = (e) => {
     e.preventDefault();
-    axiosSecure.patch(`/reviews/${editingReview._id}`, formData).then(() => {
-      setReviews(prev =>
-        prev.map(r =>
-          r._id === editingReview._id ? { ...r, ...formData } : r
-        )
-      );
-      document.getElementById('edit-modal').close();
-      Swal.fire('Success', 'Review updated successfully', 'success');
-    });
+
+    const { rating, comment } = editData;
+    const updated = {
+      rating,
+      comment,
+      date: new Date().toISOString(),
+    };
+
+    axiosSecure.patch(`/reviews/${editingReview._id}`, updated)
+      .then(() => {
+        setReviews(prev =>
+          prev.map(r => (r._id === editingReview._id ? { ...r, ...updated } : r))
+        );
+        Swal.fire('Success!', 'Review updated successfully.', 'success');
+        setEditingReview(null);
+      });
   };
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4 text-red-700">🌟 My Reviews</h2>
+      <h2 className="text-3xl font-bold mb-6 text-center text-red-950">📝 My Reviews</h2>
+
       {reviews.length === 0 ? (
-        <p className="text-gray-500">No reviews submitted yet.</p>
+        <p className="text-center text-gray-500">No reviews found.</p>
       ) : (
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white shadow rounded-xl">
-            <thead className="bg-red-100 text-left">
+          <table className="min-w-full border border-gray-200 bg-white shadow rounded-lg text-sm">
+            <thead className="bg-gradient-to-r from-amber-400 to-amber-300 text-red-950">
               <tr>
-                <th className="px-4 py-2">Scholarship</th>
-                <th className="px-4 py-2">University</th>
-                <th className="px-4 py-2">Comment</th>
-                <th className="px-4 py-2">Date</th>
-                <th className="px-4 py-2">Actions</th>
+                <th className="py-3 px-5 text-left">Scholarship</th>
+                <th className="py-3 px-5 text-left">University</th>
+                <th className="py-3 px-5 text-left">Comment</th>
+                <th className="py-3 px-5 text-left">Date</th>
+                <th className="py-3 px-5 text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {reviews.map(review => (
-                <tr key={review._id} className="border-b">
-                  <td className="px-4 py-2">{review.scholarshipName}</td>
-                  <td className="px-4 py-2">{review.universityName}</td>
-                  <td className="px-4 py-2">{review.reviewText}</td>
-                  <td className="px-4 py-2">
-                    {new Date(review.date).toLocaleDateString()}
-                  </td>
-                  <td className="px-4 py-2 flex gap-2">
+              {reviews.map((review, idx) => (
+                <tr key={review._id} className={idx % 2 === 0 ? 'bg-gray-50' : ''}>
+                  <td className="py-3 px-5">{review.scholarshipName}</td>
+                  <td className="py-3 px-5">{review.universityName}</td>
+                  <td className="py-3 px-5 break-words max-w-xs">{review.comment}</td>
+                  <td className="py-3 px-5">{new Date(review.date).toLocaleDateString()}</td>
+                  <td className="py-3 px-5 text-center flex justify-center gap-3">
                     <button
-                      onClick={() => openEditModal(review)}
-                      className="text-blue-600 hover:text-blue-800"
+                      onClick={() => handleEditClick(review)}
+                      className="bg-amber-400 hover:bg-amber-500 text-red-950 text-xs px-3 py-1 rounded cursor-pointer font-semibold"
                     >
-                      <FaEdit />
+                      Edit
                     </button>
                     <button
                       onClick={() => handleDelete(review._id)}
-                      className="text-red-600 hover:text-red-800"
+                      className="bg-red-950 hover:bg-red-800 text-white text-xs px-3 py-1 rounded cursor-pointer font-semibold"
                     >
-                      <FaTrash />
+                      Delete
                     </button>
                   </td>
                 </tr>
@@ -109,41 +110,53 @@ const MyReviews = () => {
         </div>
       )}
 
-      {/* Modal */}
-      <dialog id="edit-modal" className="modal">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg mb-4">Edit Review</h3>
-          <form onSubmit={handleEditSubmit} className="space-y-4">
-            <textarea
-              className="w-full p-2 border rounded"
-              name="reviewText"
-              value={formData.reviewText}
-              onChange={handleFormChange}
-              required
-            />
+      {/* Edit Modal */}
+      {editingReview && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <form
+            onSubmit={handleEditSubmit}
+            className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative"
+          >
+            <button
+              type="button"
+              onClick={() => setEditingReview(null)}
+              className="absolute top-2 right-3 text-gray-500 hover:text-black text-2xl font-bold"
+            >
+              &times;
+            </button>
+            <h2 className="text-xl font-bold mb-5 text-red-950 text-center">Edit Review</h2>
+
+            <label className="block mb-1 font-semibold text-red-950">Rating (1-5)</label>
             <input
-              className="w-full p-2 border rounded"
+              type="number"
               name="rating"
-              value={formData.rating}
-              onChange={handleFormChange}
-              placeholder="Rating (1-5)"
+              min="1"
+              max="5"
+              value={editData.rating || ''}
+              onChange={handleEditChange}
               required
+              className="w-full mb-4 p-2 border border-amber-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400"
             />
-            <div className="modal-action">
-              <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">
-                Save Changes
-              </button>
-              <button
-                type="button"
-                onClick={() => document.getElementById('edit-modal').close()}
-                className="bg-gray-400 text-white px-4 py-2 rounded"
-              >
-                Cancel
-              </button>
-            </div>
+
+            <label className="block mb-1 font-semibold text-red-950">Comment</label>
+            <textarea
+              name="comment"
+              value={editData.comment || ''}
+              onChange={handleEditChange}
+              required
+              className="w-full mb-5 p-2 border border-amber-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400"
+              rows={4}
+            />
+
+            <button
+              type="submit"
+              className="w-full bg-red-950 hover:bg-amber-400 hover:text-red-950 text-white hover:font-bold py-2 rounded transition-colors cursor-pointer"
+            >
+              Save Changes
+            </button>
           </form>
         </div>
-      </dialog>
+      )}
     </div>
   );
 };

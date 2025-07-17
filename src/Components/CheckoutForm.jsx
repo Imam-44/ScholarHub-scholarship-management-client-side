@@ -75,7 +75,7 @@ const CheckoutForm = ({ scholarship }) => {
     if (paymentIntent.status === 'succeeded') {
       const application = {
         ...formData,
-      
+        scholarshipName: scholarship.scholarshipName,
         universityName: scholarship.universityName,
         universityCountry: scholarship.universityCountry,
         universityCity: scholarship.universityCity,
@@ -226,6 +226,10 @@ const CheckoutForm = ({ scholarship }) => {
 
       {/* Read-only scholarship fields */}
       <div className="mt-8 space-y-3 text-sm text-gray-700 bg-amber-50 p-5 rounded-lg shadow-inner">
+        <p>
+          <strong>Scholarship Name:</strong>{' '}
+          <span className="text-red-950">{scholarship.scholarshipName}</span>
+        </p>
         <p>
           <strong>University:</strong>{' '}
           <span className="text-red-950">{scholarship.universityName}</span>

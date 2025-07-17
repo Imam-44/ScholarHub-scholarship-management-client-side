@@ -64,7 +64,7 @@ const AllAppliedScholarships = () => {
   return (
     <div className="p-6 bg-white rounded-xl shadow-md">
       <h2 className="text-3xl font-semibold mb-6 text-slate-800">
-        📋 All Applied Scholarships
+        📋 All Application
       </h2>
 
       <div className="overflow-x-auto">
@@ -86,15 +86,14 @@ const AllAppliedScholarships = () => {
                 <td className="px-4 py-2">{app.degree}</td>
                 <td className="px-4 py-2">
                   <span
-                    className={`inline-block px-3 py-1 rounded-full text-xs font-semibold text-white ${
-                      app.status === 'pending'
+                    className={`inline-block px-3 py-1 rounded-full text-xs font-semibold text-white ${app.status === 'pending'
                         ? 'bg-yellow-500'
                         : app.status === 'processing'
-                        ? 'bg-blue-600'
-                        : app.status === 'completed'
-                        ? 'bg-green-600'
-                        : 'bg-red-500'
-                    }`}
+                          ? 'bg-blue-600'
+                          : app.status === 'completed'
+                            ? 'bg-green-600'
+                            : 'bg-red-500'
+                      }`}
                   >
                     {app.status}
                   </span>
@@ -102,22 +101,23 @@ const AllAppliedScholarships = () => {
                 <td className="px-4 py-2 space-x-2">
                   <button
                     onClick={() => handleDetails(app)}
-                    className="px-3 py-1 bg-sky-500 hover:bg-sky-600 text-white text-sm rounded"
+                    className="px-3 py-1 bg-sky-500 hover:bg-sky-600 text-white text-sm rounded cursor-pointer"
                   >
                     Details
                   </button>
                   <button
                     onClick={() => handleFeedbackOpen(app)}
-                    className="px-3 py-1 bg-purple-500 hover:bg-purple-600 text-white text-sm rounded"
+                    className="px-3 py-1 bg-purple-500 hover:bg-purple-600 text-white text-sm rounded cursor-pointer"
                   >
                     Feedback
                   </button>
                   <button
                     onClick={() => handleCancel(app._id)}
-                    className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm rounded"
+                    className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm rounded cursor-pointer"
                   >
                     Cancel
                   </button>
+
                 </td>
               </tr>
             ))}
@@ -131,7 +131,7 @@ const AllAppliedScholarships = () => {
           <div className="bg-white p-6 rounded-lg w-[400px] shadow-lg relative">
             <button
               onClick={closeDetails}
-              className="absolute top-2 right-3 text-gray-500 hover:text-black text-lg"
+              className="absolute top-2 right-3 text-gray-500 cursor-pointer hover:text-black text-lg"
             >
               ✕
             </button>
@@ -141,7 +141,7 @@ const AllAppliedScholarships = () => {
               <p><strong>Degree:</strong> {selectedApp.degree}</p>
               <p><strong>Category:</strong> {selectedApp.scholarshipCategory}</p>
               <p><strong>Applicant Email:</strong> {selectedApp.userEmail}</p>
-              <p><strong>Applied On:</strong> {new Date(selectedApp.applicationDate).toDateString()}</p>
+              <p><strong>Applied On:</strong> {new Date(selectedApp.date).toDateString()}</p>
             </div>
           </div>
         </div>
@@ -162,13 +162,13 @@ const AllAppliedScholarships = () => {
             <div className="mt-4 flex justify-end space-x-2">
               <button
                 onClick={() => setFeedbackId(null)}
-                className="px-4 py-1 bg-gray-300 hover:bg-gray-400 rounded text-sm"
+                className="px-4 cursor-pointer py-1 bg-gray-300 hover:bg-gray-400 rounded text-sm"
               >
                 Cancel
               </button>
               <button
                 onClick={handleFeedbackSubmit}
-                className="px-4 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-sm"
+                className="px-4 py-1 bg-green-600 hover:bg-green-700 cursor-pointer text-white rounded text-sm"
               >
                 Submit
               </button>

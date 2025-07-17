@@ -22,9 +22,8 @@ const ScholarshipDetailsModal = ({ scholarship, onClose }) => {
           <p><strong>Category:</strong> {scholarship.subjectCategory}</p>
           <p><strong>Degree:</strong> {scholarship.degree}</p>
           <p><strong>Fees:</strong> ${scholarship.applicationFees}</p>
-          <p><strong>Location:</strong> {scholarship.location || 'N/A'}</p>
           <p><strong>Deadline:</strong> {scholarship.applicationDeadline || 'N/A'}</p>
-          <p><strong>Description:</strong> {scholarship.description || 'No description provided.'}</p>
+          <p><strong>Description:</strong> {scholarship.scholarshipDescription || 'No description provided.'}</p>
         </div>
       </div>
     </div>

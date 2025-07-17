@@ -76,11 +76,11 @@ const router = createBrowserRouter([
         element: <MyApplications />
       },
       {
-        path: 'applications/details/:id',
+        path: 'applications/:id',
         element: <ApplicationDetails />
       },
       {
-        path: 'applications/edit/:id',
+        path: 'applications/:id',
         element: <EditApplication />
       },
       {

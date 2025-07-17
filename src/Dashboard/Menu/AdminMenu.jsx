@@ -5,8 +5,8 @@ import { Link } from 'react-router';
 
 const AdminMenu = () => {
   return (
-     <>
-         <div>
+    <>
+      <div>
         <h3 className="text-sm text-gray-400 uppercase mb-2">Admin</h3>
         <ul className="space-y-2">
           <li>
@@ -17,6 +17,11 @@ const AdminMenu = () => {
           <li>
             <Link to="/dashboard/add-scholarship" className="flex items-center gap-3 hover:bg-gray-700 px-3 py-2 rounded-xl">
               <FaPlus /> Add Scholarship
+            </Link>
+          </li>
+          <li>
+            <Link to="/dashboard/manage-scholarships" className="flex items-center gap-3 hover:bg-gray-700 px-3 py-2 rounded-xl">
+              <FaTasks /> Manage Scholarships
             </Link>
           </li>
           <li>
@@ -36,7 +41,7 @@ const AdminMenu = () => {
           </li>
         </ul>
       </div>
-     </>
+    </>
   );
 };
 

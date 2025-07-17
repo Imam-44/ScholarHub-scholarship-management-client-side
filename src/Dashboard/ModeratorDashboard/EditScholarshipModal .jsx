@@ -8,17 +8,28 @@ const EditScholarshipModal = ({ scholarship, onClose, onUpdate }) => {
 
   const handleChange = e => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => ({
+      ...prev,
+      [name]: name === 'applicationFees' ? Number(value) : value,
+    }));
   };
+
 
   const handleSubmit = e => {
     e.preventDefault();
-    axiosSecure.patch(`/scholarship/${formData._id}`, formData)
+
+    const { _id, ...updateData } = formData;
+
+    axiosSecure.patch(`/scholarship/${_id}`, updateData)
       .then(() => {
         Swal.fire('Success', 'Scholarship updated successfully', 'success');
-        onUpdate(formData);
+        onUpdate({ ...formData, edit: false });
       })
-      .catch(() => Swal.fire('Error', 'Update failed', 'error'));
+      .catch((error) => {
+        console.error('upddate failed:', error);
+        Swal.fire('Error', 'Update failed', 'error');
+      })
+
   };
 
   return (
@@ -43,7 +54,7 @@ const EditScholarshipModal = ({ scholarship, onClose, onUpdate }) => {
           <input
             className="w-full border p-2 rounded"
             name="scholarshipCategory"
-            value={formData.scholarshipCategory}
+            value={formData.subjectCategory}
             onChange={handleChange}
             placeholder="Category"
           />

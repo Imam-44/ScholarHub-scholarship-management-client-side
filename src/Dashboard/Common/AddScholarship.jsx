@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAuth from '../../hooks/useAuth';
+import toast from 'react-hot-toast';
 
 const AddScholarship = () => {
   const { user } = useAuth();
@@ -25,7 +26,8 @@ const AddScholarship = () => {
       const data = await res.json();
       if (data.success) {
         setImage(data.data.url);
-        Swal.fire('Success', 'Image uploaded!', 'success');
+        toast.success('Image uploaded!');
+
       }
     } catch (err) {
       Swal.fire('Error', 'Image upload failed!', 'error');
@@ -139,7 +141,7 @@ const AddScholarship = () => {
 
         {/* Image Upload */}
         <div className="md:col-span-2">
-          <label className="font-semibold text-gray-700 mb-2 block">Upload University Logo</label>
+          <label className="font-semibold text-gray-700 mb-2 block">Upload University Image</label>
           <div className="flex items-center gap-4">
             <input
               type="file"
@@ -163,7 +165,7 @@ const AddScholarship = () => {
           <button
             type="submit"
             disabled={!image || uploading}
-            className="px-8 py-3 rounded-lg text-white text-lg font-semibold bg-gradient-to-r from-amber-600 to-red-950 hover:from-amber-700 hover:to-red-900 transition-all duration-300 shadow-lg disabled:opacity-60"
+            className="px-8 py-3 rounded-lg text-white text-lg font-semibold bg-gradient-to-r from-amber-500 to-amber-700  hover:from-red-950 hover:to-red-900 transition-all duration-300 shadow-lg cursor-pointer"
           >
             Add Scholarship
           </button>

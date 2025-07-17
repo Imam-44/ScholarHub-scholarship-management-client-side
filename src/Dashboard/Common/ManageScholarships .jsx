@@ -3,6 +3,7 @@ import { FaEdit, FaEye, FaTrash } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import EditScholarshipModal from '../ModeratorDashboard/EditScholarshipModal ';
+import ScholarshipDetailsModal from '../ModeratorDashboard/ScholarshipDetailsModal ';
 
 
 
@@ -40,9 +41,9 @@ const ManageScholarships = () => {
         <table className="min-w-full divide-y divide-gray-200 bg-white">
           <thead className="bg-red-100 text-red-800 font-semibold text-sm">
             <tr>
-              <th className="px-6 py-3 text-left">Scholarship</th>
-              <th className="px-6 py-3 text-left">University</th>
-              <th className="px-6 py-3 text-left">Category</th>
+              <th className="px-4 py-3 text-left">Scholarship</th>
+              <th className="px-4 py-3 text-left">University</th>
+              <th className="px-4 py-3 text-left">Subject Category</th>
               <th className="px-6 py-3 text-left">Degree</th>
               <th className="px-6 py-3 text-left">Fees</th>
               <th className="px-6 py-3 text-center">Actions</th>
@@ -51,9 +52,9 @@ const ManageScholarships = () => {
           <tbody className="divide-y divide-gray-100 text-gray-700">
             {scholarships.map(s => (
               <tr key={s._id} className="hover:bg-gray-50 transition">
-                <td className="px-6 py-4">{s.scholarshipName}</td>
-                <td className="px-6 py-4">{s.universityName}</td>
-                <td className="px-6 py-4">{s.scholarshipCategory}</td>
+                <td className="px-4 py-4">{s.scholarshipName}</td>
+                <td className="px-4 py-4">{s.universityName}</td>
+                <td className="px-4 py-4">{s.subjectCategory}</td>
                 <td className="px-6 py-4">{s.degree}</td>
                 <td className="px-6 py-4">${s.applicationFees}</td>
                 <td className="px-6 py-4 text-center space-x-3">
@@ -84,6 +85,14 @@ const ManageScholarships = () => {
           </tbody>
         </table>
       </div>
+
+           {/*  Details Modal */}
+      {selected && !selected.edit && (
+        <ScholarshipDetailsModal
+          scholarship={selected}
+          onClose={() => setSelected(null)}
+        />
+      )}
 
       {/* Edit Modal */}
       {selected && selected.edit && (

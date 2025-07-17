@@ -29,7 +29,7 @@ const TopScholarships = () => {
       </div>
 
       <div className="flex justify-center mt-10">
-        <Link to="/all-scholarship">
+        <Link to="/all-scholarships">
           <button className="px-6 py-4 bg-gradient-to-r from-amber-600 to-red-900  hover:from-red-950 hover:to-red-900 shadow hover:shadow-lg shadow-red-950 transition duration-300 cursor-pointer text-white font-semibold rounded-lg   ">
             View All Scholarships
           </button>

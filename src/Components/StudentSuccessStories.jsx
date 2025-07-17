@@ -7,21 +7,21 @@ const successStories = [
     country: 'Bangladesh',
     university: 'Harvard University',
     quote: 'ScholarHub helped me get a full scholarship at my dream university with proper guidance.',
-    image: 'https://i.ibb.co/7gH2ZYC/harvard-logo.png',
+    image: 'https://i.ibb.co/RTJhLZ6v/premium-photo-1661694306340-c816559efc7a.jpg',
   },
   {
     name: 'Tanvir Ahmed',
     country: 'Bangladesh',
     university: 'University of Oxford',
     quote: 'I received an offer easily through this platform with a smooth application process.',
-    image: 'https://upload.wikimedia.org/wikipedia/en/e/ee/Oxford_University_Circlet.svg',
+    image: 'https://i.ibb.co/HfGMWmwk/premium-photo-1658506724186-63a705425f89.jpg',
   },
   {
     name: 'Raisa Chowdhury',
     country: 'Bangladesh',
     university: 'University of Tokyo',
     quote: 'The reviews and information here guided me to make the right decision.',
-    image: 'https://upload.wikimedia.org/wikipedia/en/8/8e/University_of_Tokyo_Logo.svg',
+    image: 'https://i.ibb.co/wrZGfsTY/photo-1590070572368-74a1e6da0a34.jpg',
   },
 ];
 
@@ -49,7 +49,7 @@ const StudentSuccessStories = () => {
             <img
               src={student.image}
               alt={student.university}
-              className="w-24 h-24 object-contain mx-auto mb-4 bg-white p-2 rounded-xl shadow-md"
+              className="w-30 h-30 object-cover mx-auto mb-4 bg-amber-600 p-0.5 rounded-xl shadow-md"
             />
             <p className="italic text-amber-100 mb-4 text-sm">"{student.quote}"</p>
             <h3 className="font-bold text-lg text-amber-400">{student.name}</h3>

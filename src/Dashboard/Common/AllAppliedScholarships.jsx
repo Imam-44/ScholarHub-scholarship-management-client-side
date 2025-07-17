@@ -9,7 +9,7 @@ const AllAppliedScholarships = () => {
   const [feedbackText, setFeedbackText] = useState('');
   const [feedbackId, setFeedbackId] = useState(null);
 
-  const { data: applications = [], refetch } = useQuery({
+  const { data: applications = [], isLoading, refetch } = useQuery({
     queryKey: ['allApplications'],
     queryFn: async () => {
       const res = await axiosSecure.get('/all-applications');
@@ -60,7 +60,15 @@ const AllAppliedScholarships = () => {
       }
     }
   };
-
+  
+    // ✅ Loading Text
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[200px] text-xl font-semibold text-blue-600">
+        🔄 Loading applications...
+      </div>
+    );
+  }
   return (
     <div className="p-6 bg-white rounded-xl shadow-md">
       <h2 className="text-3xl font-semibold mb-6 text-slate-800">

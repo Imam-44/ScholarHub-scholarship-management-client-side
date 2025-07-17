@@ -2,14 +2,18 @@ import { useEffect, useState } from 'react';
 import { FaEdit, FaEye, FaTrash } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import toast from 'react-hot-toast';
 
 const ManageScholarships = () => {
   const axiosSecure = useAxiosSecure();
   const [scholarships, setScholarships] = useState([]);
   const [selectedScholarship, setSelectedScholarship] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [formData, setFormData] = useState({});
+
 
   useEffect(() => {
     axiosSecure.get('/scholarship')
@@ -20,9 +24,22 @@ const ManageScholarships = () => {
           setScholarships([]);
           console.error('Scholarships response is not array', res.data);
         }
+        setLoading(false); 
       })
-      .catch(console.error);
+      .catch(err => {
+        console.error(err);
+        setLoading(false); 
+      });
   }, [axiosSecure]);
+
+  if (loading) {
+    return (
+      <div className="text-center text-lg text-red-950 font-semibold py-10">
+        Loading scholarships...
+      </div>
+    );
+  }
+
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -30,7 +47,7 @@ const ManageScholarships = () => {
       text: "Scholarship will be deleted permanently!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#b91c1c', // red-950
+      confirmButtonColor: '#b91c1c', 
       confirmButtonText: 'Yes, delete it!',
     }).then(result => {
       if (result.isConfirmed) {

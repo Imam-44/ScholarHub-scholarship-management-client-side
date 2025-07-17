@@ -2,19 +2,32 @@ import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAuth from '../../hooks/useAuth';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const MyReviews = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true); // ⬅️ loading state
   const [editingReview, setEditingReview] = useState(null);
   const [editData, setEditData] = useState({});
 
+
   useEffect(() => {
     if (user?.email) {
-      axiosSecure.get(`/my-reviews/${user.email}`).then(res => setReviews(res.data));
+      axiosSecure.get(`/my-reviews/${user.email}`)
+        .then(res => {
+          setReviews(res.data);
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
     }
   }, [user, axiosSecure]);
+
+  
+  if (loading) {
+    return <p className='text-center'>Loading your review...</p>;
+  }
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -22,7 +35,7 @@ const MyReviews = () => {
       text: 'You are about to delete this review.',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#b91c1c', // red-950
+      confirmButtonColor: '#b91c1c',
       confirmButtonText: 'Yes, delete it!',
     }).then(result => {
       if (result.isConfirmed) {
@@ -46,7 +59,6 @@ const MyReviews = () => {
 
   const handleEditSubmit = (e) => {
     e.preventDefault();
-
     const { rating, comment } = editData;
     const updated = {
       rating,
@@ -68,7 +80,11 @@ const MyReviews = () => {
     <div className="p-6">
       <h2 className="text-3xl font-bold mb-6 text-center text-red-950">📝 My Reviews</h2>
 
-      {reviews.length === 0 ? (
+      {loading ? (
+        <div className="text-center text-gray-500 py-10">
+          <span className="loading loading-spinner loading-lg text-amber-500"></span>
+        </div>
+      ) : reviews.length === 0 ? (
         <p className="text-center text-gray-500">No reviews found.</p>
       ) : (
         <div className="overflow-x-auto">

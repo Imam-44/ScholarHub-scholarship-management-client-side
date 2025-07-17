@@ -4,10 +4,19 @@ import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const AllReviews = () => {
   const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true); 
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
-    axiosSecure.get('/reviews').then(res => setReviews(res.data));
+    axiosSecure.get('/reviews')
+      .then(res => {
+        setReviews(res.data);
+        setLoading(false); 
+      })
+      .catch(err => {
+        console.error('Failed to fetch reviews:', err);
+        setLoading(false);
+      });
   }, [axiosSecure]);
 
   const handleDelete = (id) => {
@@ -33,7 +42,9 @@ const AllReviews = () => {
     <div className="p-6">
       <h2 className="text-3xl font-bold mb-6 text-center text-red-950">🗂️ All Reviews</h2>
 
-      {reviews.length === 0 ? (
+      {loading ? (
+        <p className="text-center text-lg text-gray-700 font-medium py-10">Loading reviews...</p>
+      ) : reviews.length === 0 ? (
         <p className="text-center text-gray-500">No reviews available.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -55,7 +66,9 @@ const AllReviews = () => {
                 />
                 <div>
                   <p className="font-semibold text-red-950">{review.reviewerName}</p>
-                  <p className="text-xs text-gray-500">{new Date(review.date).toLocaleDateString()}</p>
+                  <p className="text-xs text-gray-500">
+                    {new Date(review.date).toLocaleDateString()}
+                  </p>
                 </div>
               </div>
 

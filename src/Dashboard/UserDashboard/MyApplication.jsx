@@ -70,8 +70,8 @@ const handleDetails = (application) => {
         ` : ''}
       </div>
     `,
-    background: '#1f2937', // Tailwind gray-800 background
-    confirmButtonColor: '#fbbf24', // Amber confirm button
+    background: '#1f2937', 
+    confirmButtonColor: '#fbbf24', 
     confirmButtonText: 'Close',
     width: 650,
   });

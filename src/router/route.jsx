@@ -80,7 +80,7 @@ const router = createBrowserRouter([
         element: <ApplicationDetails />
       },
       {
-        path: 'applications/:id',
+        path: 'applications/edit/:id',
         element: <EditApplication />
       },
       {

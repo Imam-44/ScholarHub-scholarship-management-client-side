@@ -22,7 +22,7 @@ const ScholarshipDetails = () => {
         {/* Left: University Logo */}
         <div className="flex justify-center items-start md:items-center">
           <img
-            src={scholarship.universityLogo}
+            src={scholarship.universityImage}
             alt="University"
             className="w-full h-[400px] object-cover bg-gray-100 rounded-lg shadow-sm p-3"
           />

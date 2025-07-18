@@ -56,6 +56,7 @@ const AddScholarship = () => {
       applicationDeadline: form.deadline.value,
       postDate: form.postDate.value,
       postedBy: user.email,
+      description: form.description.value,
     };
 
     try {
@@ -137,6 +138,18 @@ const AddScholarship = () => {
         <div className="flex flex-col">
           <label className="mb-1 font-semibold text-gray-700">Scholarship Post Date</label>
           <input type="date" name="postDate" required className="input border border-gray-300 rounded px-4 py-2" />
+        </div>
+
+        {/* Description Field */}
+        <div className="md:col-span-2 flex flex-col">
+          <label className="mb-1 font-semibold text-gray-700">Description</label>
+          <textarea
+            name="description"
+            required
+            rows={4}
+            placeholder="Enter scholarship description"
+            className="textarea border border-gray-300 focus:border-amber-600 focus:ring-2 focus:ring-amber-200 rounded px-4 py-2 resize-none"
+          ></textarea>
         </div>
 
         {/* Image Upload */}

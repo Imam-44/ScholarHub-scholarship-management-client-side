@@ -17,7 +17,7 @@ const DashboardLayout = () => {
       <div className="md:hidden flex items-center justify-between bg-white shadow px-4 py-3 w-full fixed top-0 left-0 z-30">
         <button
           onClick={toggleSidebar}
-          className="text-2xl text-gray-700 focus:outline-none"
+          className="text-2xl text-gray-700 focus:outline-none cursor-pointer"
           aria-label="Toggle Sidebar"
         >
           {sidebarOpen ? <FaTimes /> : <FaBars />}

@@ -48,9 +48,34 @@ const Navbar = () => {
         <ul className="hidden md:flex items-center gap-6 text-white font-medium text-lg">
           <li><NavLink to="/" className={navLinkClass} aria-label="Home">Home</NavLink></li>
           <li><NavLink to="/all-scholarships" className={navLinkClass} aria-label="all-scholarship">All Scholarships</NavLink></li>
-          
-          <li><Link to={'/dashboard/my-profile'}>Dashboard</Link></li>
-     
+
+          {user && (
+            <>
+              {userRole === 'user' && (
+                <li>
+                  <NavLink to="/dashboard/user" className={navLinkClass} aria-label="User Dashboard">
+                    User Dashboard
+                  </NavLink>
+                </li>
+              )}
+              {userRole === 'moderator' && (
+                <li>
+                  <NavLink to="/dashboard/moderator" className={navLinkClass} aria-label="Moderator Dashboard">
+                    Moderator Dashboard
+                  </NavLink>
+                </li>
+              )}
+              {userRole === 'admin' && (
+                <li>
+                  <NavLink to="/dashboard/admin" className={navLinkClass} aria-label="Admin Dashboard">
+                    Admin Dashboard
+                  </NavLink>
+                </li>
+              )}
+            </>
+          )}
+
+
           {user ? (
             <>
               {/* Profile Picture with Tooltip */}

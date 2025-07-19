@@ -11,9 +11,9 @@ const DashboardLayout = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex h-screen overflow-hidden">
 
-      {/* Mobile Header with toggle button */}
+      {/* Mobile Header */}
       <div className="md:hidden flex items-center justify-between bg-white shadow px-4 py-3 w-full fixed top-0 left-0 z-30">
         <button
           onClick={toggleSidebar}
@@ -28,19 +28,18 @@ const DashboardLayout = () => {
       {/* Sidebar */}
       <div
         className={`
-    fixed top-0 left-0 h-full w-64 bg-white shadow-md z-40
-    transform transition-transform duration-300 ease-in-out
-    ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-    md:translate-x-0 md:static md:shadow-none
-    pt-16 md:pt-0
-    overflow-y-auto
-  `}
+          fixed top-0 left-0 h-full w-64 bg-white shadow-md z-40
+          transform transition-transform duration-300 ease-in-out
+          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+          md:translate-x-0 md:static md:shadow-none
+          pt-0 md:pt-0
+          overflow-y-auto
+        `}
       >
         <Sidebar />
       </div>
 
-
-      {/* Overlay when sidebar is open on mobile */}
+      {/* Overlay on mobile */}
       {sidebarOpen && (
         <div
           onClick={toggleSidebar}
@@ -48,8 +47,8 @@ const DashboardLayout = () => {
         ></div>
       )}
 
-      {/* Main content */}
-      <div className="flex-1 p-6 pt-20 md:pt-6">
+      {/* Main content (scrollable) */}
+      <div className="flex-1 overflow-y-auto p-6 pt-20 md:pt-6 ml-0 md:ml-5 h-screen">
         <Outlet />
       </div>
     </div>

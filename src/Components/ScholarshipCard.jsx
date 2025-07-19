@@ -1,7 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+import { useQuery } from '@tanstack/react-query';
 
 const ScholarshipCard = ({ scholarship }) => {
+  const { data: ratingData } = useQuery({
+    queryKey: ['averageRating', scholarship._id],
+    queryFn: async () => {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/reviews/average/${scholarship._id}`);
+      return res.data;
+    },
+    enabled: !!scholarship._id
+  });
+
   return (
     <div className="bg-gradient-to-br from-red-900 via-red-950 to-black text-white rounded-2xl shadow-lg hover:shadow-amber-900 transition duration-300 p-6  border border-red-800">
       {/* University Logo */}
@@ -33,7 +45,12 @@ const ScholarshipCard = ({ scholarship }) => {
       {/* Category & Rating */}
       <div className="text-sm text-center text-yellow-400 mb-3 space-x-2">
         <p>📂scholarship Category: {scholarship.scholarshipCategory}</p>
-        <p>⭐ Rating: {scholarship.rating || 'N/A'} / 5</p>
+        {
+          typeof ratingData?.average === 'number'
+            ? <p>Rating: ⭐ {ratingData.average.toFixed(1)}</p>
+            : <p className="text-gray-400">Loading rating...</p>
+        }
+
       </div>
 
       {/* Fees & Deadline */}

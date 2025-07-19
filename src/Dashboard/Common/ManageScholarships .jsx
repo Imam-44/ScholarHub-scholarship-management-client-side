@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { FaEdit, FaEye, FaTrash } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
-import toast from 'react-hot-toast';
+
 
 const ManageScholarships = () => {
   const axiosSecure = useAxiosSecure();
@@ -15,22 +15,23 @@ const ManageScholarships = () => {
   const [formData, setFormData] = useState({});
 
 
-  useEffect(() => {
-    axiosSecure.get('/scholarship')
-      .then(res => {
-        if (Array.isArray(res.data.scholarships)) {
-          setScholarships(res.data.scholarships);
-        } else {
-          setScholarships([]);
-          console.error('Scholarships response is not array', res.data);
-        }
-        setLoading(false); 
-      })
-      .catch(err => {
-        console.error(err);
-        setLoading(false); 
-      });
-  }, [axiosSecure]);
+useEffect(() => {
+  axiosSecure.get('/scholarship/all')
+    .then(res => {
+      if (Array.isArray(res.data)) {
+        setScholarships(res.data);
+      } else {
+        setScholarships([]);
+       
+      }
+      setLoading(false);
+    })
+    .catch(err => {
+      
+      setLoading(false);
+    });
+}, [axiosSecure]);
+
 
   if (loading) {
     return (
@@ -47,7 +48,7 @@ const ManageScholarships = () => {
       text: "Scholarship will be deleted permanently!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#b91c1c', 
+      confirmButtonColor: '#b91c1c',
       confirmButtonText: 'Yes, delete it!',
     }).then(result => {
       if (result.isConfirmed) {
@@ -75,12 +76,12 @@ const ManageScholarships = () => {
       await axiosSecure.patch(`/scholarship/${_id}`, formData);
       Swal.fire({ icon: 'success', title: 'Update Successful' });
 
-      const res = await axiosSecure.get('/scholarship');
-      setScholarships(res.data.scholarships);
+      const res = await axiosSecure.get('/scholarship/all');
+      setScholarships(res.data);
       setShowEditModal(false);
       setSelectedScholarship(null);
     } catch (error) {
-      console.error('Update failed:', error);
+    
       Swal.fire({ icon: 'error', title: 'Update Failed', text: error.message });
     }
   };
@@ -148,23 +149,44 @@ const ManageScholarships = () => {
 
       {/* Details Modal */}
       {showDetailsModal && selectedScholarship && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-            <h3 className="text-xl font-semibold mb-4 text-red-950">Scholarship Details</h3>
-            <p><strong>Name:</strong> {selectedScholarship.name}</p>
-            <p><strong>University:</strong> {selectedScholarship.universityName}</p>
-            <p><strong>Category:</strong> {selectedScholarship.subjectCategory}</p>
-            <p><strong>Degree:</strong> {selectedScholarship.degree}</p>
-            <p><strong>Fees:</strong> ${selectedScholarship.applicationFees}</p>
-            <button
-              onClick={() => setShowDetailsModal(false)}
-              className="mt-6 px-4 py-2 bg-red-950 text-white rounded hover:bg-amber-400 hover:text-red-950 transition cursor-pointer"
-            >
-              Close
-            </button>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50 overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl">
+            <h3 className="text-2xl font-bold mb-4 text-red-950 text-center">Scholarship Details</h3>
+
+            <div className="space-y-2 text-sm text-gray-800">
+              <img
+                src={selectedScholarship.universityImage}
+                alt="University"
+                className="w-full h-60 object-cover rounded-md mb-4"
+              />
+              <p><strong>Scholarship Name:</strong> {selectedScholarship.scholarshipName}</p>
+              <p><strong>University:</strong> {selectedScholarship.universityName}</p>
+              <p><strong>Location:</strong> {selectedScholarship.universityCity}, {selectedScholarship.universityCountry}</p>
+              <p><strong>University Rank:</strong> {selectedScholarship.universityRank}</p>
+              <p><strong>Subject Category:</strong> {selectedScholarship.subjectCategory}</p>
+              <p><strong>Scholarship Category:</strong> {selectedScholarship.scholarshipCategory}</p>
+              <p><strong>Degree:</strong> {selectedScholarship.degree}</p>
+              <p><strong>Tuition Fees:</strong> ${selectedScholarship.tuitionFees}</p>
+              <p><strong>Application Fees:</strong> ${selectedScholarship.applicationFees}</p>
+              <p><strong>Service Charge:</strong> ${selectedScholarship.serviceCharge}</p>
+              <p><strong>Application Deadline:</strong> {selectedScholarship.applicationDeadline}</p>
+              <p><strong>Post Date:</strong> {selectedScholarship.postDate}</p>
+              <p><strong>Posted By:</strong> {selectedScholarship.postedBy}</p>
+              <p><strong>Description:</strong> {selectedScholarship.description}</p>
+            </div>
+
+            <div className="text-center mt-6">
+              <button
+                onClick={() => setShowDetailsModal(false)}
+                className="px-6 py-2 bg-red-950 text-white rounded hover:bg-amber-400 hover:text-red-950 transition cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
+
 
       {/* Edit Modal */}
       {showEditModal && (

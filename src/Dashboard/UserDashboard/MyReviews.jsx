@@ -24,7 +24,7 @@ const MyReviews = () => {
     }
   }, [user, axiosSecure]);
 
-  
+
   if (loading) {
     return <p className='text-center'>Loading your review...</p>;
   }
@@ -148,11 +148,13 @@ const MyReviews = () => {
               name="rating"
               min="1"
               max="5"
+              step="0.1"      
               value={editData.rating || ''}
               onChange={handleEditChange}
               required
               className="w-full mb-4 p-2 border border-amber-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400"
             />
+
 
             <label className="block mb-1 font-semibold text-red-950">Comment</label>
             <textarea

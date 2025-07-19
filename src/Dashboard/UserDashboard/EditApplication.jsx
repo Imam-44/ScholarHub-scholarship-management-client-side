@@ -43,7 +43,7 @@ const EditApplication = () => {
         navigate('/dashboard/my-applications');
       })
       .catch((err) => {
-        console.error(err.response?.data || err.message);
+     
         Swal.fire('Error', 'Failed to update', 'error');
       });
   };

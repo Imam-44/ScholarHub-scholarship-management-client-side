@@ -14,7 +14,6 @@ import Dashboard from "../Dashboard/Dashboard";
 import CheckoutPage from "../Pages/CheckoutPage";
 import ApplicationDetails from "../Dashboard/UserDashboard/ApplicationDetails ";
 import EditApplication from "../Dashboard/UserDashboard/EditApplication";
-import ReviewForm from "../Dashboard/UserDashboard/ReviewForm";
 import MyProfile from "../Dashboard/Common/MyProfile";
 
 import AllReviews from "../Dashboard/Common/AllReviews";
@@ -22,12 +21,16 @@ import AllAppliedScholarships from "../Dashboard/Common/AllAppliedScholarships";
 import AddScholarship from "../Dashboard/Common/AddScholarship";
 import ManageUsers from "../Dashboard/AdminDashboard.jsx/ManageUsers ";
 import ManageScholarships from "../Dashboard/Common/ManageScholarships ";
+import NotFound from "../Components/NotFound";
+import AdminAnalytics from "../Dashboard/AdminDashboard.jsx/AdminAnalytics";
+
 
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomeLayouts />,
+    errorElement: <NotFound />,
     children: [
       {
         index: true,
@@ -72,6 +75,18 @@ const router = createBrowserRouter([
         element: <Dashboard />
       },
       {
+        path: 'user',
+        element: <MyProfile />
+      },
+      {
+        path: 'moderator',
+        element: <MyProfile />
+      },
+      {
+        path: 'admin',
+        element: <MyProfile />
+      },
+      {
         path: 'my-applications',
         element: <MyApplications />
       },
@@ -84,13 +99,9 @@ const router = createBrowserRouter([
         element: <EditApplication />
       },
       {
-        path: 'applications/review/:id',
-        element: <ReviewForm />
-      },
-      {
         path: 'my-reviews',
         element: <MyReviews />
-       
+
       },
       {
         path: 'my-profile',
@@ -106,17 +117,22 @@ const router = createBrowserRouter([
       },
       {
         path: 'all-applied-scholarships',
-        element: <AllAppliedScholarships/>
+        element: <AllAppliedScholarships />
       },
       {
         path: 'add-scholarship',
-        element: <AddScholarship/>
+        element: <AddScholarship />
       },
       {
         path: 'manage-users',
-        element: <ManageUsers/>
+        element: <ManageUsers />
       },
-  
+      {
+        path: '/dashboard/analytics',
+        element: <AdminAnalytics />
+      }
+
+
     ]
   },
 

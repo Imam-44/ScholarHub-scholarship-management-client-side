@@ -3,12 +3,16 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import Swal from 'sweetalert2';
 import useAuth from '../hooks/useAuth';
 import useAxiosSecure from '../hooks/useAxiosSecure';
+import toast from 'react-hot-toast';
+import { useRef } from 'react';
 
 const CheckoutForm = ({ scholarship }) => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const stripe = useStripe();
   const elements = useElements();
+  const [alreadyApplied, setAlreadyApplied] = useState(false);
+  const fileInputRef = useRef();
 
   const initialFormState = {
     phone: '',
@@ -23,6 +27,35 @@ const CheckoutForm = ({ scholarship }) => {
 
   const [formData, setFormData] = useState(initialFormState);
   const [clientSecret, setClientSecret] = useState('');
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    const checkAlreadyApplied = async () => {
+      try {
+        const res = await axiosSecure.get('/apply-scholarship/check', {
+          params: {
+            email: user.email,
+            scholarshipId: scholarship._id,
+          },
+        });
+
+        if (res.data.alreadyApplied) {
+          console.log('Already applied status:', res.data.alreadyApplied);
+
+          setAlreadyApplied(true);
+          toast.error('You have already applied for this scholarship!');
+        }
+      } catch (error) {
+        console.error('Check failed', error);
+      }
+    };
+
+    if (user?.email && scholarship?._id) {
+      checkAlreadyApplied();
+    }
+  }, [user, scholarship]);
+
+
 
   useEffect(() => {
     if (scholarship?.applicationFees) {
@@ -41,13 +74,55 @@ const CheckoutForm = ({ scholarship }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleImageUpload = async e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploading(true);
+
+    const formDataImage = new FormData();
+    formDataImage.append('image', file);
+
+    try {
+      const res = await fetch(
+        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,
+        { method: 'POST', body: formDataImage }
+      );
+      const data = await res.json();
+      if (data.success) {
+        setFormData(prev => ({ ...prev, photo: data.data.url }));
+        toast.success('Image uploaded successfully!');
+      } else {
+        throw new Error('Upload failed');
+      }
+    } catch (err) {
+      Swal.fire('Error', 'Image upload failed!', 'error');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleSubmit = async e => {
     e.preventDefault();
+
+    if (alreadyApplied) {
+      return toast.error("You have already applied!");
+    }
+
+    // Validate SSC and HSC
+    const ssc = parseFloat(formData.ssc);
+    const hsc = parseFloat(formData.hsc);
+    if (ssc < 1 || ssc > 5 || hsc < 1 || hsc > 5) {
+      return Swal.fire(
+        'Invalid Result',
+        'SSC and HSC results must be between 1.0 and 5.0',
+        'warning'
+      );
+    }
 
     if (!stripe || !elements) return;
     const card = elements.getElement(CardElement);
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
+    const { error } = await stripe.createPaymentMethod({
       type: 'card',
       card,
     });
@@ -94,10 +169,11 @@ const CheckoutForm = ({ scholarship }) => {
       await axiosSecure.post('/apply-scholarship', application);
 
       Swal.fire('Success!', 'Scholarship Applied Successfully!', 'success');
-
-      // Reset form data & card input
       setFormData(initialFormState);
       card.clear();
+      if (fileInputRef.current) {
+        fileInputRef.current.value = null;
+      }
     }
   };
 
@@ -125,16 +201,19 @@ const CheckoutForm = ({ scholarship }) => {
         </div>
 
         <div>
-          <label className="block mb-1 font-medium text-red-950">Photo</label>
+          <label className="block mb-1 font-medium text-red-950">Upload Photo</label>
           <input
-            type="text"
-            name="photo"
-            value={formData.photo}
+            type="file"
             required
-            onChange={handleChange}
-            placeholder="Photo URL"
-            className="w-full px-4 py-2 rounded-lg border border-amber-600 focus:outline-none focus:border-red-950 shadow-sm transition duration-300"
+            accept="image/*"
+            onChange={handleImageUpload}
+            ref={fileInputRef}
+            className="w-full px-4 py-2 border border-amber-600 rounded-lg shadow-sm cursor-pointer"
           />
+          {uploading && <p className="text-sm text-amber-700 mt-1">Uploading...</p>}
+          {formData.photo && (
+            <img src={formData.photo} alt="Uploaded" className="mt-2 h-16 w-16 rounded-lg border" />
+          )}
         </div>
 
         <div>
@@ -185,12 +264,15 @@ const CheckoutForm = ({ scholarship }) => {
         <div>
           <label className="block mb-1 font-medium text-red-950">SSC Result</label>
           <input
-            type="text"
+            type="number"
             name="ssc"
             value={formData.ssc}
             required
             onChange={handleChange}
-            placeholder="SSC Result"
+            placeholder="SSC Result (1.0 - 5.0)"
+            min="1"
+            max="5"
+            step="0.1"
             className="w-full px-4 py-2 rounded-lg border border-amber-600 focus:outline-none focus:border-red-950 shadow-sm transition duration-300"
           />
         </div>
@@ -198,12 +280,15 @@ const CheckoutForm = ({ scholarship }) => {
         <div>
           <label className="block mb-1 font-medium text-red-950">HSC Result</label>
           <input
-            type="text"
+            type="number"
             name="hsc"
             value={formData.hsc}
             required
             onChange={handleChange}
-            placeholder="HSC Result"
+            placeholder="HSC Result (1.0 - 5.0)"
+            min="1"
+            max="5"
+            step="0.1"
             className="w-full px-4 py-2 rounded-lg border border-amber-600 focus:outline-none focus:border-red-950 shadow-sm transition duration-300"
           />
         </div>
@@ -224,7 +309,7 @@ const CheckoutForm = ({ scholarship }) => {
         </div>
       </div>
 
-      {/* Read-only scholarship fields */}
+      {/* Scholarship Summary */}
       <div className="mt-8 space-y-3 text-sm text-gray-700 bg-amber-50 p-5 rounded-lg shadow-inner">
         <p>
           <strong>Scholarship Name:</strong>{' '}
@@ -250,7 +335,6 @@ const CheckoutForm = ({ scholarship }) => {
         </p>
       </div>
 
-      {/* Stripe Card Input */}
       <div className="mt-6 p-4 border-2 border-amber-600 rounded-lg shadow-sm">
         <CardElement
           options={{
@@ -258,13 +342,9 @@ const CheckoutForm = ({ scholarship }) => {
               base: {
                 fontSize: '16px',
                 color: '#7f1d1d',
-                '::placeholder': {
-                  color: '#d97706',
-                },
+                '::placeholder': { color: '#d97706' },
               },
-              invalid: {
-                color: '#b91c1c',
-              },
+              invalid: { color: '#b91c1c' },
             },
           }}
         />
@@ -272,11 +352,13 @@ const CheckoutForm = ({ scholarship }) => {
 
       <button
         type="submit"
-        className="w-full bg-gradient-to-r from-amber-600 to-red-950 hover:from-red-950 hover:to-amber-600 text-white py-3 rounded-xl shadow-lg transition duration-300 font-semibold cursor-pointer"
-        disabled={!stripe}
+        disabled={alreadyApplied}
+        className={`w-full bg-gradient-to-r from-amber-600 to-red-950 hover:from-red-950 hover:to-amber-600 text-white py-3 rounded-xl shadow-lg transition duration-300 font-semibold ${alreadyApplied ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+          }`}
       >
-        Submit & Pay
+        {alreadyApplied ? 'Already Applied' : 'Submit & Pay'}
       </button>
+
     </form>
   );
 };

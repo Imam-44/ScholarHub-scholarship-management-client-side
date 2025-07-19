@@ -10,7 +10,7 @@ const TopScholarships = () => {
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_API_URL}/top-scholarship`)
       .then(res => setScholarships(res.data))
-      .catch(err => console.error(err));
+      .catch();
   }, []);
 
   return (

@@ -16,7 +16,7 @@ const CheckoutPage = () => {
     axios
       .get(`${import.meta.env.VITE_API_URL}/scholarship/${id}`)
       .then(res => setScholarship(res.data))
-      .catch(err => console.error(err));
+   
   }, [id]);
 
   if (!scholarship) return <p className="text-center mt-20">Loading...</p>;

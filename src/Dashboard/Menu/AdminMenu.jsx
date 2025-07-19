@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaPlus, FaTasks, FaUsers } from 'react-icons/fa';
-import { MdAdminPanelSettings, MdReviews } from 'react-icons/md';
+import { MdAdminPanelSettings, MdManageAccounts, MdOutlineAnalytics, MdReviews } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 
 const AdminMenu = () => {
@@ -54,7 +54,7 @@ const AdminMenu = () => {
                 }`
               }
             >
-              <FaTasks /> Manage Applications
+              <MdManageAccounts /> Manage Applications
             </NavLink>
           </li>
           <li>
@@ -79,6 +79,18 @@ const AdminMenu = () => {
               }
             >
               <MdReviews /> Manage Reviews
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/dashboard/analytics"
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2 rounded-xl transition duration-200 ${
+                  isActive ? 'bg-amber-400 text-gray-900' : 'hover:bg-gray-700 text-white'
+                }`
+              }
+            >
+              <MdOutlineAnalytics/> Analytics
             </NavLink>
           </li>
         </ul>

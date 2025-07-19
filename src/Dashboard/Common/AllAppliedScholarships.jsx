@@ -8,6 +8,7 @@ const AllAppliedScholarships = () => {
   const [selectedApp, setSelectedApp] = useState(null);
   const [feedbackText, setFeedbackText] = useState('');
   const [feedbackId, setFeedbackId] = useState(null);
+  const [sortBy, setSortBy] = useState('');
 
   const { data: applications = [], isLoading, refetch } = useQuery({
     queryKey: ['allApplications'],
@@ -16,6 +17,17 @@ const AllAppliedScholarships = () => {
       return res.data.applications;
     },
   });
+
+  const sortedApplications = [...applications].sort((a, b) => {
+  if (sortBy === 'appliedDate') {
+    return new Date(b.date) - new Date(a.date);
+  } else if (sortBy === 'deadline') {
+    return new Date(b.scholarshipDeadline) - new Date(a.scholarshipDeadline);
+  } else {
+    return 0;
+  }
+});
+
 
   const handleDetails = (app) => setSelectedApp(app);
   const closeDetails = () => setSelectedApp(null);
@@ -60,8 +72,8 @@ const AllAppliedScholarships = () => {
       }
     }
   };
-  
-    // ✅ Loading Text
+
+  // ✅ Loading Text
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-[200px] text-xl font-semibold text-blue-600">
@@ -75,6 +87,19 @@ const AllAppliedScholarships = () => {
         📋 All Application
       </h2>
 
+      <div className="flex justify-center mb-6">
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="border border-gray-400 px-4 py-2 rounded-md text-black"
+        >
+          <option value="">🔽 Sort By</option>
+          <option value="appliedDate">📅 Applied Date</option>
+          <option value="deadline">⏳ Scholarship Deadline</option>
+        </select>
+      </div>
+
+
       <div className="overflow-x-auto">
         <table className="table-auto w-full text-left border border-gray-200">
           <thead className="bg-gray-100 text-sm text-gray-700 uppercase">
@@ -87,7 +112,7 @@ const AllAppliedScholarships = () => {
             </tr>
           </thead>
           <tbody className="text-sm">
-            {applications.map((app) => (
+            {sortedApplications.map((app) => (
               <tr key={app._id} className="border-t border-gray-200 hover:bg-gray-50">
                 <td className="px-4 py-2 font-medium">{app.userName}</td>
                 <td className="px-4 py-2">{app.universityName}</td>
@@ -95,12 +120,12 @@ const AllAppliedScholarships = () => {
                 <td className="px-4 py-2">
                   <span
                     className={`inline-block px-3 py-1 rounded-full text-xs font-semibold text-white ${app.status === 'pending'
-                        ? 'bg-yellow-500'
-                        : app.status === 'processing'
-                          ? 'bg-blue-600'
-                          : app.status === 'completed'
-                            ? 'bg-green-600'
-                            : 'bg-red-500'
+                      ? 'bg-yellow-500'
+                      : app.status === 'processing'
+                        ? 'bg-blue-600'
+                        : app.status === 'completed'
+                          ? 'bg-green-600'
+                          : 'bg-red-500'
                       }`}
                   >
                     {app.status}

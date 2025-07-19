@@ -4,10 +4,10 @@ A full-stack Scholarship Management System where students can explore and apply 
 
 ## 🔗 Live Links
 
-- 🔴 **Frontend**: [Live Site Link](https://your-frontend-site-url.com)
-- 🟢 **Backend**: [Live Server Link](https://your-backend-server-url.com)
-- 💻 **Client Repository**: [GitHub Client](https://github.com/your-username/client-repo)
-- 🗃️ **Server Repository**: [GitHub Server](https://github.com/your-username/server-repo)
+- 🔴 **Frontend**: [Live Site Link]: https://assignment-12-final-7187e.web.app/
+- 🟢 **Backend**: [Live Server Link]:https://assignment-12-server-b467o7t5h-imam-44s-projects.vercel.app/
+- 💻 **Client Repository**: [GitHub Client]:https://github.com/Programming-Hero-Web-Course4/b11a12-client-side-Imam-44.git
+- 🗃️ **Server Repository**: [GitHub Server]:https://github.com/Programming-Hero-Web-Course4/b11a12-server-side-Imam-44.git
 
 ## 🧾 Project Purpose
 
@@ -15,13 +15,7 @@ To help students find suitable scholarships and apply easily while allowing mode
 
 ## 👤 Demo Credentials
 
-### 🔐 Admin
-- Email: `admin@example.com`
-- Password: `Admin123!`
 
-### 🛡️ Moderator
-- Email: `moderator@example.com`
-- Password: `Moderator123!`
 
 ## 🧩 Features
 

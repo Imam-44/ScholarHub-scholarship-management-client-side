@@ -18,7 +18,7 @@ const Hero = () => {
             {/* Slide 1 */}
             <div className="relative h-[300px] md:h-[450px] lg:h-[600px]">
               <img
-                src="https://i.ibb.co/k2TpX2zQ/graduate-1.jpg"
+                src="https://i.ibb.co/fGv4rx1X/cambridge.jpg"
                 alt="Scholarship Offer 1"
                 className="h-full w-full object-cover rounded-lg"
               />
@@ -50,7 +50,7 @@ const Hero = () => {
             {/* Slide 2 */}
             <div className="relative h-[300px] md:h-[450px] lg:h-[600px]">
               <img
-                src="https://i.ibb.co/RkQqxTFX/graduate-2.jpg"
+                src="https://i.ibb.co/0R2fhxyN/photo-1592280771190-3e2e4d571952.jpg"
                 alt="Scholarship Offer 2"
                 className="h-full w-full object-cover rounded-lg"
               />

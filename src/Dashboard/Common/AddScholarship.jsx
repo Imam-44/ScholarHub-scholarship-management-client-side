@@ -39,6 +39,11 @@ const AddScholarship = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
+     
+if (!image) {
+  console.log('No image uploaded yet');
+  return Swal.fire('Error', 'Please upload an image before submitting.', 'warning');
+}
 
     const newScholarship = {
       scholarshipName: form.scholarshipName.value,
@@ -158,7 +163,7 @@ const AddScholarship = () => {
           <div className="flex items-center gap-4">
             <input
               type="file"
-              accept="image/*"
+             accept="image/*"
               id="upload"
               onChange={handleImageUpload}
               className="hidden"
@@ -177,7 +182,7 @@ const AddScholarship = () => {
         <div className="md:col-span-2 mt-6 text-center">
           <button
             type="submit"
-            disabled={!image || uploading}
+            // disabled={!image || uploading}
             className="px-8 py-3 rounded-lg text-white text-lg font-semibold bg-gradient-to-r from-amber-500 to-amber-700  hover:from-red-950 hover:to-red-900 transition-all duration-300 shadow-lg cursor-pointer"
           >
             Add Scholarship

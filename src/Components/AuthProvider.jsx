@@ -44,7 +44,7 @@ const fetchUserRole = async (email) => {
     const res = await axiosSecure.get(`/users/role/${email}`);
     return res.data.role || 'user'; // Default fallback
   } catch (error) {
-    console.error('Error fetching role:', error.message);
+    
     return 'user';
   }
 };
@@ -82,7 +82,7 @@ useEffect(() => {
         });
 
       } catch (error) {
-        console.error("Auth setup error:", error.message);
+     
         setUser(currentUser); // fallback: set without role
       }
     } else {

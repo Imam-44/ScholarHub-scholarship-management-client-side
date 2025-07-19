@@ -12,7 +12,7 @@ const ApplicationDetails = () => {
       .get(`/application/${id}`)
       .then((res) => setApplication(res.data))
       .catch((error) => {
-        console.error('Failed to fetch application:', error);
+       
         setApplication(null);
       });
   }, [id, axiosSecure]);

@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router';
 const MyApplications = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
- const navigate = useNavigate()
+  const navigate = useNavigate()
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedReview, setSelectedReview] = useState(null);
@@ -26,10 +26,10 @@ const MyApplications = () => {
       });
   }, [user?.email, axiosSecure]);
 
-const handleDetails = (application) => {
-  Swal.fire({
-    title: `<span style="color: #fbbf24; font-size: 24px;">🎓 ${application.scholarshipName}</span>`,
-    html: `
+  const handleDetails = (application) => {
+    Swal.fire({
+      title: `<span style="color: #fbbf24; font-size: 24px;">🎓 ${application.scholarshipName}</span>`,
+      html: `
       <div style="
         text-align: left; 
         color: #fff; 
@@ -70,19 +70,19 @@ const handleDetails = (application) => {
         ` : ''}
       </div>
     `,
-    background: '#1f2937', 
-    confirmButtonColor: '#fbbf24', 
-    confirmButtonText: 'Close',
-    width: 650,
-  });
-};
+      background: '#1f2937',
+      confirmButtonColor: '#fbbf24',
+      confirmButtonText: 'Close',
+      width: 650,
+    });
+  };
 
 
   const handleEdit = (application) => {
     if (application.status !== 'pending') {
       Swal.fire('Cannot Edit', 'Application is already processing or completed.', 'warning');
     } else {
-      
+
       navigate(`/dashboard/applications/edit/${application._id}`)
     }
   };
@@ -112,16 +112,17 @@ const handleDetails = (application) => {
     const form = e.target;
     const rating = form.rating.value;
     const comment = form.comment.value;
-    const date = form.date.value;
+    const date = new Date().toISOString();
 
     const review = {
       rating,
       comment,
       date,
+      scholarshipId: selectedReview.scholarshipId,
       scholarshipName: selectedReview.scholarshipName,
       subjectCategory: selectedReview.subjectCategory,
       universityName: selectedReview.universityName,
-      universityId: selectedReview.universityId,
+      // universityId: selectedReview.universityId,
       reviewerName: user.displayName,
       reviewerEmail: user.email,
       reviewerImage: user.photoURL || '',
@@ -164,7 +165,7 @@ const handleDetails = (application) => {
               {applications.map((app, idx) => (
                 <tr key={app._id} className={idx % 2 === 0 ? 'bg-gray-50' : ''}>
                   <td className="py-3 px-4">{app.universityName}</td>
-                  <td className="py-3 px-4">{app.universityCountry } , {app.universityCity}</td>
+                  <td className="py-3 px-4">{app.universityCountry} , {app.universityCity}</td>
                   <td className="py-3 px-4">{app.feedback || 'N/A'}</td>
                   <td className="py-3 px-4">{app.subjectCategory}</td>
                   <td className="py-3 px-4">{app.degree}</td>
@@ -229,24 +230,21 @@ const handleDetails = (application) => {
             <input
               type="number"
               name="rating"
-              placeholder="Rating (1-5)"
+              placeholder="Rating (1.0 - 5.0)"
               min="1"
               max="5"
+              step="0.1"
               className="w-full mb-3 border p-2 rounded"
               required
             />
+
             <textarea
               name="comment"
               placeholder="Your comment"
               className="w-full mb-3 border p-2 rounded"
               required
             ></textarea>
-            <input
-              type="date"
-              name="date"
-              className="w-full mb-4 border p-2 rounded"
-              required
-            />
+      
             <button
               type="submit"
               className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded cursor-pointer"

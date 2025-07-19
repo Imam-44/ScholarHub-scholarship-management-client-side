@@ -18,7 +18,7 @@ const Navbar = () => {
     if (user?.email) {
       axiosSecure.get(`/users/role/${user.email}`)
         .then((res) => setUserRole(res.data.role))
-        .catch((error) => console.error('Error fetching role:', error));
+        .catch();
     }
   }, [user, axiosSecure]);
 
@@ -114,64 +114,72 @@ const Navbar = () => {
         </ul>
 
         {/* Mobile Menu Toggle */}
-        <button className="md:hidden cursor-pointer" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
+        <button className="md:hidden cursor-pointer text-white" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
           {isOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
       </div>
 
       {/* Mobile Menu with Animation */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.ul
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.25 }}
-            className="md:hidden flex flex-col gap-4 px-6 pt-4 pb-6 bg-gray-100 text-gray-800 font-medium"
+    {/* Mobile Menu with Animation */}
+<AnimatePresence>
+  {isOpen && (
+    <motion.ul
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.25 }}
+      className="
+        md:hidden 
+        absolute top-full inset-x-0    /* position right below the nav */
+        flex flex-col gap-4 px-6 py-4 
+        text-black font-medium text-lg
+        bg-white
+      "
+    >
+      {user && (
+        <li className="flex items-center gap-2">
+          <img
+            className="w-8 h-8 rounded-full border-2 border-amber-500 object-cover"
+            src={user.photoURL}
+            alt="User profile"
+          />
+          <span>{user.displayName}</span>
+        </li>
+      )}
+      <li><NavLink to="/" className={navLinkClass}>Home</NavLink></li>
+      <li><NavLink to="/all-scholarships" className={navLinkClass}>All Scholarships</NavLink></li>
+      {userRole === 'user' && (
+        <li><NavLink to="/dashboard/user" className={navLinkClass}>User Dashboard</NavLink></li>
+      )}
+      {userRole === 'moderator' && (
+        <li><NavLink to="/dashboard/moderator" className={navLinkClass}>Moderator Dashboard</NavLink></li>
+      )}
+      {userRole === 'admin' && (
+        <li><NavLink to="/dashboard/admin" className={navLinkClass}>Admin Dashboard</NavLink></li>
+      )}
+      {user ? (
+        <li>
+          <button
+            onClick={handleSignOut}
+            className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition"
           >
-            {user && (
-              <li className="flex items-center gap-2">
-                <img
-                  className="w-8 h-8 rounded-full border-2 border-amber-500 object-cover"
-                  src={user.photoURL}
-                  alt="User profile"
-                />
-                <span>{user.displayName}</span>
-              </li>
-            )}
-            <li><NavLink to="/" className={navLinkClass} aria-label="Home">Home</NavLink></li>
-            <li><NavLink to="/all-scholarships" className={navLinkClass} aria-label="All Scholarships">All Scholarships</NavLink></li>
-            <li><Link to={'/dashboard/my-profile'}>Dashboard</Link></li>
-            {/* {user && (
-              <li><NavLink to="/dashboard/user" className={navLinkClass} aria-label="User Dashboard">User Dashboard</NavLink></li>
-            )}
-            {(userRole === 'admin' || userRole === 'moderator') && (
-              <li><NavLink to="/dashboard/admin" className={navLinkClass} aria-label="Admin Dashboard">Admin Dashboard</NavLink></li>
-            )} */}
-            {user ? (
-              <li>
-                <button
-                  onClick={handleSignOut}
-                  className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition cursor-pointer"
-                  aria-label="Sign out"
-                >
-                  Sign Out
-                </button>
-              </li>
-            ) : (
-              <li>
-                <Link
-                  to="/signin"
-                  className="bg-amber-600 text-white px-5 py-2 rounded hover:bg-amber-700 transition"
-                  aria-label="Sign in"
-                >
-                  Sign In
-                </Link>
-              </li>
-            )}
-          </motion.ul>
-        )}
-      </AnimatePresence>
+            Sign Out
+          </button>
+        </li>
+      ) : (
+        <li>
+          <Link
+            to="/signin"
+            className="bg-amber-600 text-white px-5 py-2 rounded hover:bg-amber-700 transition"
+          >
+            Sign In
+          </Link>
+        </li>
+      )}
+    </motion.ul>
+  )}
+</AnimatePresence>
+
     </nav>
   );
 };

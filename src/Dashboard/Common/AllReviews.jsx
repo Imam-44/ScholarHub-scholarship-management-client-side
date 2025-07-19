@@ -14,7 +14,7 @@ const AllReviews = () => {
         setLoading(false); 
       })
       .catch(err => {
-        console.error('Failed to fetch reviews:', err);
+      
         setLoading(false);
       });
   }, [axiosSecure]);
@@ -79,7 +79,7 @@ const AllReviews = () => {
 
               <button
                 onClick={() => handleDelete(review._id)}
-                className="mt-4 bg-red-950 hover:bg-red-800 text-white py-1 px-4 rounded text-sm font-semibold transition-all"
+                className="mt-4 bg-red-950 hover:bg-red-800 text-white py-1 px-4 rounded text-sm font-semibold transition-all cursor-pointer"
               >
                 Delete
               </button>

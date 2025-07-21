@@ -72,6 +72,48 @@ const AllAppliedScholarships = () => {
       }
     }
   };
+  const handleProcessing = async (id) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to processing this application?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, processing it!',
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axiosSecure.patch(`/application-status/${id}`, {
+          status: 'processing',
+        });
+        Swal.fire('processing start', 'Application has been processing.', 'success');
+        refetch();
+      } catch (error) {
+        Swal.fire('Error', 'Failed to cancel application.', 'error');
+      }
+    }
+  };
+  const handleCompleted = async (id) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to completed this application?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, completed it!',
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axiosSecure.patch(`/application-status/${id}`, {
+          status: 'completed',
+        });
+        Swal.fire('completed done', 'Application has been completed.', 'success');
+        refetch();
+      } catch (error) {
+        Swal.fire('Error', 'Failed to cancel application.', 'error');
+      }
+    }
+  };
 
   // ✅ Loading Text
   if (isLoading) {
@@ -143,6 +185,18 @@ const AllAppliedScholarships = () => {
                     className="px-3 py-1 bg-purple-500 hover:bg-purple-600 text-white text-sm rounded cursor-pointer"
                   >
                     Feedback
+                  </button>
+                  <button
+                    onClick={() => handleProcessing(app._id)}
+                    className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded cursor-pointer"
+                  >
+                    Procecing
+                  </button>
+                  <button
+                    onClick={() => handleCompleted(app._id)}
+                    className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-sm rounded cursor-pointer"
+                  >
+                  Completed
                   </button>
                   <button
                     onClick={() => handleCancel(app._id)}

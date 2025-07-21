@@ -24,7 +24,7 @@ const SignUp = () => {
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
     } catch (err) {
-      console.error('Failed to save user:', err.message);
+      
     }
   };
 
@@ -46,7 +46,7 @@ const SignUp = () => {
 
       toast.success('Image uploaded successfully'); // ✅ replaced Swal
     } catch (error) {
-      console.error('Image upload failed:', error.message);
+  
       toast.error('Image upload failed'); // ✅ replaced Swal
     } finally {
       setUploading(false);

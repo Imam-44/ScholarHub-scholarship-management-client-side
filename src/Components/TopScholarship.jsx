@@ -10,7 +10,7 @@ const TopScholarships = () => {
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_API_URL}/top-scholarship`)
       .then(res => setScholarships(res.data))
-      .catch();
+      .catch(err => console.error('Error loading top scholarships:', err));
   }, []);
 
   return (

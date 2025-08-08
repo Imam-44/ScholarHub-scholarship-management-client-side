@@ -6,15 +6,15 @@ A full-stack Scholarship Management System where students can explore and apply 
 
 - 🔴 **Frontend**: [Live Site Link]: https://assignment-12-final-7187e.web.app/
 - 🟢 **Backend**: [Live Server Link]:https://assignment-12-server-b467o7t5h-imam-44s-projects.vercel.app/
-- 💻 **Client Repository**: [GitHub Client]:https://github.com/Programming-Hero-Web-Course4/b11a12-client-side-Imam-44.git
-- 🗃️ **Server Repository**: [GitHub Server]:https://github.com/Programming-Hero-Web-Course4/b11a12-server-side-Imam-44.git
+- 💻 **Client Repository**: [GitHub Client]:https://github.com/Imam-44/ScholarHub-scholarship-management-client-side.git
+- 🗃️ **Server Repository**: [GitHub Server]:https://github.com/Imam-44/ScholarHub-scholarship-management-server-side.git
 
 ## 🧾 Project Purpose
 
 To help students find suitable scholarships and apply easily while allowing moderators and admins to manage scholarship postings, reviews, and applications in a role-based dashboard environment.
 
 ## 👤 Demo Credentials
-
+https://i.ibb.co.com/6chVRRwG/Scholar-Hub.png
 
 
 ## 🧩 Features

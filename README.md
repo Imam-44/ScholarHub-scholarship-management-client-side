@@ -13,8 +13,10 @@ A full-stack Scholarship Management System where students can explore and apply 
 
 To help students find suitable scholarships and apply easily while allowing moderators and admins to manage scholarship postings, reviews, and applications in a role-based dashboard environment.
 
-## 👤 Demo Credentials
-https://i.ibb.co.com/6chVRRwG/Scholar-Hub.png
+## 📸 Screenshot
+
+![Language Exchange Screenshot](https://i.ibb.co.com/6chVRRwG/Scholar-Hub.png)
+
 
 
 ## 🧩 Features

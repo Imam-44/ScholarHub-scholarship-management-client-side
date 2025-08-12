@@ -6,12 +6,15 @@ import CoreFeatures from '../Components/CoreFeatures';
 
 const Home = () => {
   return (
-     <div className='w-11/12 mx-auto'>
-       <Hero/>
-       <TopScholarships/>
-       <StudentSuccessStories/>
-       <CoreFeatures/>
-     </div>
+    <>
+      <Hero />
+      <div className='w-11/12 mx-auto'>
+
+        <TopScholarships />
+        <StudentSuccessStories />
+        <CoreFeatures />
+      </div>
+    </>
   );
 };
 

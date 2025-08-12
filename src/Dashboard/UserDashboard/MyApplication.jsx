@@ -15,7 +15,7 @@ const MyApplications = () => {
   useEffect(() => {
     if (!user?.email) return;
 
-    axiosSecure.get(`/my-applications/${user.email}`)
+    axiosSecure.get(`/api/my-applications/${user.email}`)
       .then(res => {
         setApplications(res.data);
         setLoading(false);
@@ -96,7 +96,7 @@ const MyApplications = () => {
       confirmButtonText: 'Yes, cancel it',
     }).then(result => {
       if (result.isConfirmed) {
-        axiosSecure.patch(`/application-status/${id}`, { status: 'rejected' })
+        axiosSecure.patch(`/api/application-status/${id}`, { status: 'rejected' })
           .then(res => {
             if (res.data.modifiedCount > 0) {
               Swal.fire('Cancelled', 'Your application has been cancelled.', 'success');
@@ -128,7 +128,7 @@ const MyApplications = () => {
       reviewerImage: user.photoURL || '',
     };
 
-    const res = await axiosSecure.post('/reviews', review);
+    const res = await axiosSecure.post('/api/reviews', review);
     if (res.data.insertedId) {
       Swal.fire('Review Submitted', 'Thank you for your feedback!', 'success');
       setSelectedReview(null);

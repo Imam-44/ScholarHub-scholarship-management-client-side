@@ -10,7 +10,7 @@ const ManageUsers = () => {
   const { data: users = [], refetch } = useQuery({
     queryKey: ['users', filterRole],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/users${filterRole ? `?role=${filterRole}` : ''}`);
+      const res = await axiosSecure.get(`/api/users${filterRole ? `?role=${filterRole}` : ''}`);
       return res.data;
     },
   });

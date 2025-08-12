@@ -32,7 +32,7 @@ const CheckoutForm = ({ scholarship }) => {
   useEffect(() => {
     const checkAlreadyApplied = async () => {
       try {
-        const res = await axiosSecure.get('/apply-scholarship/check', {
+        const res = await axiosSecure.get('/api/apply-scholarship/check', {
           params: {
             email: user.email,
             scholarshipId: scholarship._id,
@@ -60,7 +60,7 @@ const CheckoutForm = ({ scholarship }) => {
   useEffect(() => {
     if (scholarship?.applicationFees) {
       axiosSecure
-        .post('/create-payment-intent', {
+        .post('/api/create-payment-intent', {
           amount: scholarship.applicationFees + scholarship.serviceCharge,
         })
         .then(res => {

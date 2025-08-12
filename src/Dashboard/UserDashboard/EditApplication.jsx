@@ -11,7 +11,7 @@ const EditApplication = () => {
   const [formData, setFormData] = useState({});
 
   useEffect(() => {
-    axiosSecure.get(`/applications/${id}`).then(res => {
+    axiosSecure.get(`/api/applications/${id}`).then(res => {
       setApplication(res.data);
       setFormData(res.data);
     });
@@ -25,19 +25,19 @@ const EditApplication = () => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    // backend-এ যেসব ফিল্ড আপডেট করার অনুমতি আছে, সেগুলো পাঠাচ্ছি
+    
     const updated = {
       address: formData.address,
       degree: formData.degree,
       phone: formData.phone,
-      photo: formData.photo || '',       // optional field, তাই fallback দেয়া হয়েছে
+      photo: formData.photo || '', 
       gender: formData.gender || '',
       ssc: formData.ssc || '',
       hsc: formData.hsc || '',
       studyGap: formData.studyGap || '',
     };
 
-    axiosSecure.patch(`/update-application/${id}`, updated)
+    axiosSecure.patch(`/api/update-application/${id}`, updated)
       .then(() => {
         Swal.fire('Success', 'Application updated', 'success');
         navigate('/dashboard/my-applications');

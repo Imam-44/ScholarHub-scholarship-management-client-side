@@ -8,7 +8,7 @@ const ScholarshipCard = ({ scholarship }) => {
   const { data: ratingData } = useQuery({
     queryKey: ['averageRating', scholarship._id],
     queryFn: async () => {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/reviews/average/${scholarship._id}`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/reviews/average/${scholarship._id}`);
       return res.data;
     },
     enabled: !!scholarship._id

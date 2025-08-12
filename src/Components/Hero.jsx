@@ -4,9 +4,9 @@ import { Carousel } from "react-responsive-carousel";
 
 const Hero = () => {
   return (
-    <div className="bg-gradient-to-br from-red-900 via-red-950 to-black rounded-2xl my-5 px-4 sm:px-6 py-2 sm:py-3">
-      <div className="bg-gradient-to-br from-amber-600 via-amber-400 to-amber-700 rounded-2xl my-4 sm:my-5">
-        <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 py-6 rounded-2xl">
+    <div className=" ">
+      <div className=" ">
+        <div className="w-full   ">
           <Carousel
             autoPlay
             infiniteLoop
@@ -16,14 +16,14 @@ const Hero = () => {
             transitionTime={800}
           >
             {/* Slide 1 */}
-            <div className="relative h-[300px] md:h-[450px] lg:h-[600px]">
+            <div className="relative h-[300px] md:h-[350px] lg:h-[600px]">
               <img
                 src="https://i.ibb.co/fGv4rx1X/cambridge.jpg"
                 alt="Scholarship Offer 1"
                 className="h-full w-full object-cover rounded-lg"
               />
               <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-center px-4">
-                <h2 className="text-white text-xl md:text-3xl lg:text-4xl font-bold mb-2">
+                <h2 className="text-amber-500 text-xl md:text-3xl lg:text-4xl font-bold mb-2">
                   100% Tuition Fee Waiver – Apply Now
                 </h2>
                 <p className="text-white text-sm md:text-lg max-w-2xl">
@@ -55,7 +55,7 @@ const Hero = () => {
                 className="h-full w-full object-cover rounded-lg"
               />
               <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-center px-4">
-                <h2 className="text-white text-xl md:text-3xl lg:text-4xl font-bold mb-2">
+                <h2 className="text-amber-500 text-xl md:text-3xl lg:text-4xl font-bold mb-2">
                   Global Scholarships for Top Universities
                 </h2>
                 <p className="text-white text-sm md:text-lg max-w-2xl">
@@ -87,7 +87,7 @@ const Hero = () => {
                 className="h-full w-full object-cover rounded-lg"
               />
               <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-center px-4">
-                <h2 className="text-white text-xl md:text-3xl lg:text-4xl font-bold mb-2">
+                <h2 className="text-amber-500 text-xl md:text-3xl lg:text-4xl font-bold mb-2">
                   Internship + Scholarship Combo Program
                 </h2>
                 <p className="text-white text-sm md:text-lg max-w-2xl">

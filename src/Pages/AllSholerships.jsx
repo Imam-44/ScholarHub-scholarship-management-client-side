@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { FaSearch } from 'react-icons/fa';
 import axios from 'axios';
 import ScholarshipCard from '../Components/ScholarshipCard';
+import LoadingSpinner from '../Components/LoadingSpinnerSecond';
+
 
 const AllScholarships = () => {
   const [searchText, setSearchText] = useState('');
@@ -16,11 +18,11 @@ const AllScholarships = () => {
       const baseURL = import.meta.env.VITE_API_URL;
       if (query) {
         // search ignores pagination
-        const res = await axios.get(`${baseURL}/search-scholarship?query=${query}`);
+        const res = await axios.get(`${baseURL}/api/search-scholarship?query=${query}`);
         return { scholarships: res.data, totalPages: 1 };
       } else {
         // paginated fetch
-        const res = await axios.get(`${baseURL}/scholarship?page=${page}&limit=${limit}`);
+        const res = await axios.get(`${baseURL}/api/scholarship?page=${page}&limit=${limit}`);
         return {
           scholarships: res.data.scholarships,
           totalPages: res.data.totalPages
@@ -59,8 +61,8 @@ const AllScholarships = () => {
       </form>
 
       {/* Loading / Error */}
-      {isLoading && <p className="text-center">Loading scholarships...</p>}
-      {isError && <p className="text-center text-red-500">Failed to load scholarships.</p>}
+      {isLoading && <LoadingSpinner/>}
+      {/* {isError && <p className="text-center text-red-500">Failed to load scholarships.</p>} */}
 
       {/* Scholarships List */}
       {scholarships.length > 0 ? (

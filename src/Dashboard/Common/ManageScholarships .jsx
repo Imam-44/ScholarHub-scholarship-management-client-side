@@ -16,7 +16,7 @@ const ManageScholarships = () => {
 
 
 useEffect(() => {
-  axiosSecure.get('/scholarship/all')
+  axiosSecure.get('/api/scholarship/all')
     .then(res => {
       if (Array.isArray(res.data)) {
         setScholarships(res.data);
@@ -52,7 +52,7 @@ useEffect(() => {
       confirmButtonText: 'Yes, delete it!',
     }).then(result => {
       if (result.isConfirmed) {
-        axiosSecure.delete(`/scholarship/${id}`).then(res => {
+        axiosSecure.delete(`/api/scholarship/${id}`).then(res => {
           if (res.data.deletedCount > 0) {
             setScholarships(prev => prev.filter(s => s._id !== id));
             Swal.fire('Deleted!', 'Scholarship has been deleted.', 'success');
@@ -73,10 +73,10 @@ useEffect(() => {
     e.preventDefault();
     try {
       const { _id } = selectedScholarship;
-      await axiosSecure.patch(`/scholarship/${_id}`, formData);
+      await axiosSecure.patch(`/api/scholarship/${_id}`, formData);
       Swal.fire({ icon: 'success', title: 'Update Successful' });
 
-      const res = await axiosSecure.get('/scholarship/all');
+      const res = await axiosSecure.get('/api/scholarship/all');
       setScholarships(res.data);
       setShowEditModal(false);
       setSelectedScholarship(null);

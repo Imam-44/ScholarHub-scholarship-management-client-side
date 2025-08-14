@@ -1,10 +1,14 @@
-import React from 'react';
+
 import Hero from '../Components/Hero';
-import TopScholarships from '../Components/TopScholarship';
+import TopScholarships from '../Components/TopScholarships';
 import StudentSuccessStories from '../Components/StudentSuccessStories';
 import CoreFeatures from '../Components/CoreFeatures';
 
+
 const Home = () => {
+
+
+
   return (
     <>
       <Hero />

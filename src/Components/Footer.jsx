@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="px-6 pt-8 md:px-16 lg:px-36 w-full text-gray-300 bg-gradient-to-r from-red-950 via-black to-red-950">
+    <footer className="px-6 pt-8 md:px-16 lg:px-36 w-full text-gray-300 bg-gradient-to-r from-red-800 via-black to-red-800">
       <div className="flex flex-col md:flex-row justify-between w-full gap-10 border-b border-gray-500 pb-10">
         {/* Left side: logo & description */}
         <div className="md:max-w-96">
       <div className='flex gap-1'>
-         
-          <h1 className="text-4xl font-bold">🎓ScholarHub</h1>
+          <img src="logo3.png" alt="" className='w-12 h-12'/>
+          <h1 className="text-4xl text-amber-100 font-bold">ScholarHub</h1>
       </div>
           <p className="mt-6 text-sm">
             ScholarHub is your one-stop solution for finding top scholarships worldwide with trusted reviews and secure applications.

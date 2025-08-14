@@ -16,7 +16,7 @@ const Navbar = () => {
   // Fetch user role
   useEffect(() => {
     if (user?.email) {
-      axiosSecure.get(`/api/users/role/${user.email}`)
+      axiosSecure.get(`/users/role/${user.email}`)
         .then((res) => setUserRole(res.data.role))
         .catch();
     }
@@ -29,22 +29,25 @@ const Navbar = () => {
 
   const handleSignOut = async () => {
     try {
-      await signOutUser();  
-      await axiosSecure.get('/api/logout'); 
-      localStorage.removeItem('access-token');  
+      await signOutUser();
+      await axiosSecure.get('/logout');
+      // localStorage.removeItem('access-token');
       Swal.fire('Success', 'Logged out successfully', 'success');
     } catch (error) {
-      console.error(error); 
+      console.error(error);
       Swal.fire('Error', 'Failed to log out', 'error');
     }
   };
 
 
   return (
-    <nav className="bg-gradient-to-r from-red-950 via-black to-red-900 shadow-md px-6 py-4 relative z-50" role="navigation" aria-label="Main navigation">
-      <div className="w-11/12 max-w-screen-2xl mx-auto flex justify-between items-center">
+    <nav className="bg-gradient-to-r from-red-700 via-black to-red-700 shadow-md px-6 py-4 relative z-50 sticky top-0" role="navigation" aria-label="Main navigation">
+      <div className="w-11/12 max-w-screen-2xl mx-auto flex justify-between items-center ">
         {/* Logo */}
-        <Link to="/" className="text-4xl font-bold text-white/80" aria-label="ScholarX Home">🎓ScholarHub</Link>
+        <div className='flex gap-2 items-center'>
+          <img src="./logo3.png" alt="logo" className='w-12 h-12' />
+          <Link to="/" className="text-4xl font-bold text-amber-100" aria-label="ScholarX Home">ScholarHub</Link>
+        </div>
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex items-center gap-6 text-white font-medium text-lg">

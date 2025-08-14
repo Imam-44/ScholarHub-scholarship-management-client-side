@@ -43,20 +43,20 @@ const ScholarshipDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_API_URL}/api/scholarship/${id}`)
+      .get(`${import.meta.env.VITE_API_URL}/scholarship/${id}`)
       .then(res => setScholarship(res.data))
     
 
     // Fetch reviews for this scholarship
     axiosSecure
-      .get(`/api/reviews?scholarshipId=${id}`)
+      .get(`/reviews?scholarshipId=${id}`)
       .then(res => setReviews(res.data))
       .catch();
   }, [id]);
 
   const handleApplyClick = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/apply-scholarship/check`, {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/apply-scholarship/check`, {
         params: { email: user.email, scholarshipId: scholarship._id }
       });
 

@@ -61,7 +61,7 @@ const AuthProvider = ({ children }) => {
   // Fetch role from DB
   const fetchUserRole = async (email) => {
     try {
-      const res = await axiosSecure.get(`/api/users/role/${email}`);
+      const res = await axiosSecure.get(`/users/role/${email}`);
       return res.data.role || "user"; // Default role if not found
     } catch (error) {
       return "user";
@@ -75,7 +75,7 @@ const AuthProvider = ({ children }) => {
         try {
           // 1. Get JWT token
           const res = await axios.post(
-            `${import.meta.env.VITE_API_URL}/api/jwt`,
+            `${import.meta.env.VITE_API_URL}/jwt`,
             { email: currentUser.email }
           );
           const token = res.data.token;

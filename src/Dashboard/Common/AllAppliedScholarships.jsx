@@ -13,7 +13,7 @@ const AllAppliedScholarships = () => {
   const { data: applications = [], isLoading, refetch } = useQuery({
     queryKey: ['allApplications'],
     queryFn: async () => {
-      const res = await axiosSecure.get('/api/all-applications');
+      const res = await axiosSecure.get('/all-applications');
       return res.data.applications;
     },
   });
@@ -39,7 +39,7 @@ const AllAppliedScholarships = () => {
 
   const handleFeedbackSubmit = async () => {
     try {
-      await axiosSecure.patch(`/api/application-feedback/${feedbackId}`, {
+      await axiosSecure.patch(`/application-feedback/${feedbackId}`, {
         feedback: feedbackText,
       });
       Swal.fire('Success', 'Feedback submitted successfully!', 'success');
@@ -62,7 +62,7 @@ const AllAppliedScholarships = () => {
 
     if (result.isConfirmed) {
       try {
-        await axiosSecure.patch(`/api/application-status/${id}`, {
+        await axiosSecure.patch(`/application-status/${id}`, {
           status: 'rejected',
         });
         Swal.fire('Cancelled', 'Application has been rejected.', 'success');
@@ -83,7 +83,7 @@ const AllAppliedScholarships = () => {
 
     if (result.isConfirmed) {
       try {
-        await axiosSecure.patch(`/api/application-status/${id}`, {
+        await axiosSecure.patch(`/application-status/${id}`, {
           status: 'processing',
         });
         Swal.fire('processing start', 'Application has been processing.', 'success');
@@ -104,7 +104,7 @@ const AllAppliedScholarships = () => {
 
     if (result.isConfirmed) {
       try {
-        await axiosSecure.patch(`/api/application-status/${id}`, {
+        await axiosSecure.patch(`/application-status/${id}`, {
           status: 'completed',
         });
         Swal.fire('completed done', 'Application has been completed.', 'success');

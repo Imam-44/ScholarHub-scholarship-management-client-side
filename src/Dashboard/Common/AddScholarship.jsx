@@ -65,7 +65,7 @@ if (!image) {
     };
 
     try {
-      await axiosSecure.post('/api/new-scholarship', newScholarship);
+      await axiosSecure.post('/new-scholarship', newScholarship);
       Swal.fire('🎉 Added!', 'Scholarship added successfully.', 'success');
       form.reset();
       setImage('');

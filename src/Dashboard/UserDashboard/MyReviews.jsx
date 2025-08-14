@@ -15,7 +15,7 @@ const MyReviews = () => {
 
   useEffect(() => {
     if (user?.email) {
-      axiosSecure.get(`/api/my-reviews/${user.email}`)
+      axiosSecure.get(`/my-reviews/${user.email}`)
         .then(res => {
           setReviews(res.data);
           setLoading(false);
@@ -39,7 +39,7 @@ const MyReviews = () => {
       confirmButtonText: 'Yes, delete it!',
     }).then(result => {
       if (result.isConfirmed) {
-        axiosSecure.delete(`/api/reviews/${id}`).then(() => {
+        axiosSecure.delete(`/reviews/${id}`).then(() => {
           setReviews(reviews.filter(review => review._id !== id));
           Swal.fire('Deleted!', 'Your review has been deleted.', 'success');
         });
@@ -66,7 +66,7 @@ const MyReviews = () => {
       date: new Date().toISOString(),
     };
 
-    axiosSecure.patch(`/api/reviews/${editingReview._id}`, updated)
+    axiosSecure.patch(`/reviews/${editingReview._id}`, updated)
       .then(() => {
         setReviews(prev =>
           prev.map(r => (r._id === editingReview._id ? { ...r, ...updated } : r))

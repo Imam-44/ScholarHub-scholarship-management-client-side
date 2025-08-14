@@ -6,56 +6,56 @@ import useAuth from '../hooks/useAuth';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import { FaGoogle } from 'react-icons/fa'
+import axios from 'axios';
 
 const SignIn = () => {
   const { signIn, signInWithGoogle } = useAuth()
   const navigate = useNavigate()
 
-  const handleSubmit = async e => {
-    e.preventDefault()
-    const form = e.target 
-    const email = form.email.value 
-    const password = form.password.value
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
 
-    try{
-      const result = await signIn(email, password)
-     if(result){
-        Swal.fire({
-            icon: "success",
-            title: "your account log in successfully",
-            showConfirmButton: false,
-            timer: 1500
-          })
-     }
-      navigate('/')
-    } catch (err){
-     if(err) {
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Your email/password are wrong!",
+    try {
+      const result = await signIn(email, password);
+      const user = result.user;
+      console.log("Firebase User:", result.user);
+      // Server এ JWT generate
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, { email: user.email });
+      console.log("JWT Response:", data);
 
-          });
-     }
+      // ✅ এখানে localStorage এ রাখবে
+      localStorage.setItem('access-token', data.accessToken);
+      localStorage.setItem('refresh-token', data.refreshToken);
+
+      navigate('/');
+    } catch (error) {
+      console.error("Login Error:", error);
+      Swal.fire('Error', 'Login failed', 'error');
     }
   };
 
-  const handleGoogleSignIn = async() => {
-  
-    try{
+
+  const handleGoogleSignIn = async () => {
+
+    try {
       const result = await signInWithGoogle()
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, { email: result.user.email });
+      localStorage.setItem('access-token', data.accessToken);
       toast.success('Logged in successfully!')
       navigate('/')
-    } catch(err){
-        if(err){
-          toast.error(err.message)
-        }
+    } catch (err) {
+      if (err) {
+        toast.error(err.message)
+      }
     }
   }
   return (
     <div className="bg-gradient-to-r from-amber-300 via-yellow-150 to-amber-900 min-h-screen flex items-center justify-center">
       <div className="w-11/12 max-w-screen-2xl mx-auto flex h-[700px] my-5 rounded-xl shadow-lg overflow-hidden bg-white/90">
-        
+
         {/* Left Image */}
         <div className="w-full hidden md:inline-block">
           <img

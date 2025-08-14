@@ -11,7 +11,7 @@ const EditApplication = () => {
   const [formData, setFormData] = useState({});
 
   useEffect(() => {
-    axiosSecure.get(`/api/applications/${id}`).then(res => {
+    axiosSecure.get(`/applications/${id}`).then(res => {
       setApplication(res.data);
       setFormData(res.data);
     });
@@ -37,7 +37,7 @@ const EditApplication = () => {
       studyGap: formData.studyGap || '',
     };
 
-    axiosSecure.patch(`/api/update-application/${id}`, updated)
+    axiosSecure.patch(`/update-application/${id}`, updated)
       .then(() => {
         Swal.fire('Success', 'Application updated', 'success');
         navigate('/dashboard/my-applications');

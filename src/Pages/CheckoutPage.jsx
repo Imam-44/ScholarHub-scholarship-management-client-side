@@ -14,7 +14,7 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_API_URL}/api/scholarship/${id}`)
+      .get(`${import.meta.env.VITE_API_URL}/scholarship/${id}`)
       .then(res => setScholarship(res.data))
    
   }, [id]);

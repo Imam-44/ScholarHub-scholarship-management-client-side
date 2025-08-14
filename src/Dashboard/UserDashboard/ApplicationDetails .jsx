@@ -9,7 +9,7 @@ const ApplicationDetails = () => {
 
   useEffect(() => {
     axiosSecure
-      .get(`/api/application/${id}`)
+      .get(`/application/${id}`)
       .then((res) => setApplication(res.data))
       .catch((error) => {
        

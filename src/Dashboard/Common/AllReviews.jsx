@@ -8,7 +8,7 @@ const AllReviews = () => {
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
-    axiosSecure.get('/api/reviews')
+    axiosSecure.get('/reviews')
       .then(res => {
         setReviews(res.data);
         setLoading(false); 
@@ -30,7 +30,7 @@ const AllReviews = () => {
       confirmButtonText: 'Yes, Delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure.delete(`/api/reviews/admin/${id}`).then(() => {
+        axiosSecure.delete(`/reviews/admin/${id}`).then(() => {
           setReviews(prev => prev.filter(review => review._id !== id));
           Swal.fire('Deleted!', 'Review has been removed.', 'success');
         });

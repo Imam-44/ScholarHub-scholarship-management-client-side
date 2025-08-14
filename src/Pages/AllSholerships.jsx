@@ -18,11 +18,11 @@ const AllScholarships = () => {
       const baseURL = import.meta.env.VITE_API_URL;
       if (query) {
         // search ignores pagination
-        const res = await axios.get(`${baseURL}/api/search-scholarship?query=${query}`);
+        const res = await axios.get(`${baseURL}/search-scholarship?query=${query}`);
         return { scholarships: res.data, totalPages: 1 };
       } else {
         // paginated fetch
-        const res = await axios.get(`${baseURL}/api/scholarship?page=${page}&limit=${limit}`);
+        const res = await axios.get(`${baseURL}/scholarship?page=${page}&limit=${limit}`);
         return {
           scholarships: res.data.scholarships,
           totalPages: res.data.totalPages

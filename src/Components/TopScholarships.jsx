@@ -10,20 +10,29 @@ const TopScholarships = () => {
   const [loading, setLoading] = useState(true);  // Loading state added
   const [error, setError] = useState(null);      // Optional: error handling
 
-  useEffect(() => {
-    setLoading(true);
-    axios.get(`${import.meta.env.VITE_API_URL}/api/top-scholarship`)
-      .then(res => {
-        setScholarships(res.data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error('Error loading top scholarships:', err);
-        setError('Failed to load scholarships');
-        setLoading(false);
-      });
-  }, []);
+useEffect(() => {
+  setLoading(true);
 
+  fetch(`${import.meta.env.VITE_API_URL}/top-scholarship`)
+  
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.json();
+    })
+    .then(data => {
+      setScholarships(data);
+      setLoading(false);
+    })
+    .catch(err => {
+      console.error('Error loading top scholarships:', err);
+      setError('Failed to load scholarships');
+      setLoading(false);
+    });
+}, []);
+
+console.log("VITE_API_URL =", import.meta.env.VITE_API_URL);
   if (loading) {
     return (
       <LoadingSpinner/>

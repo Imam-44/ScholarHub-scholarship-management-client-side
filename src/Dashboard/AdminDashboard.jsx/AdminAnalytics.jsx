@@ -15,7 +15,7 @@ const AdminAnalytics = () => {
   const [analytics, setAnalytics] = useState(null);
 
   useEffect(() => {
-    axiosSecure.get('/api/analytics')
+    axiosSecure.get('/analytics')
       .then(res => {
         setAnalytics(res.data);
       })

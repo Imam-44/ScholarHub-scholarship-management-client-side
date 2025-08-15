@@ -45,7 +45,7 @@ const Navbar = () => {
       <div className="w-11/12 max-w-screen-2xl mx-auto flex justify-between items-center ">
         {/* Logo */}
         <div className='flex gap-2 items-center'>
-          <img src="./logo3.png" alt="logo" className='w-12 h-12' />
+          <img src="/logo3.png" alt="logo" className='w-12 h-12' />
           <Link to="/" className="text-4xl font-bold text-amber-100" aria-label="ScholarX Home">ScholarHub</Link>
         </div>
 

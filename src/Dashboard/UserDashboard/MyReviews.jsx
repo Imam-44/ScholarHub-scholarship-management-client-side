@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAuth from '../../hooks/useAuth';
-import LoadingSpinner from '../../components/LoadingSpinner';
+
 
 const MyReviews = () => {
   const { user } = useAuth();

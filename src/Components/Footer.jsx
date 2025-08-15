@@ -9,7 +9,7 @@ const Footer = () => {
         {/* Left side: logo & description */}
         <div className="md:max-w-96">
       <div className='flex gap-1'>
-          <img src="logo3.png" alt="" className='w-12 h-12'/>
+          <img src="../logo3.png" alt="" className='w-12 h-12'/>
           <h1 className="text-4xl text-amber-100 font-bold">ScholarHub</h1>
       </div>
           <p className="mt-6 text-sm">

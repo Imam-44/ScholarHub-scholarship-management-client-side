@@ -10,32 +10,35 @@ const TopScholarships = () => {
   const [loading, setLoading] = useState(true);  // Loading state added
   const [error, setError] = useState(null);      // Optional: error handling
 
-useEffect(() => {
-  setLoading(true);
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
 
-  fetch(`${import.meta.env.VITE_API_URL}/top-scholarship`)
-  
-    .then(res => {
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-      return res.json();
+    // API কলের জন্য axios ব্যবহার করুন (fetch এর বিকল্প)
+    axios.get(`${import.meta.env.VITE_API_URL}/top-scholarship`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true // CORS এর জন্য গুরুত্বপূর্ণ
     })
-    .then(data => {
-      setScholarships(data);
-      setLoading(false);
-    })
-    .catch(err => {
-      console.error('Error loading top scholarships:', err);
-      setError('Failed to load scholarships');
-      setLoading(false);
-    });
-}, []);
+      .then(response => {
+        if (response.status !== 200) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        setScholarships(response.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Error loading top scholarships:', err);
+        setError(err.message || 'Failed to load scholarships');
+        setLoading(false);
+      });
+  }, []);
 
-console.log("VITE_API_URL =", import.meta.env.VITE_API_URL);
+  console.log("VITE_API_URL =", import.meta.env.VITE_API_URL);
   if (loading) {
     return (
-      <LoadingSpinner/>
+      <LoadingSpinner />
     );
   }
 

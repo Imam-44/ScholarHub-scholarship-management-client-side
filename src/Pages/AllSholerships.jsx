@@ -3,7 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { FaSearch } from 'react-icons/fa';
 import axios from 'axios';
 import ScholarshipCard from '../Components/ScholarshipCard';
-import LoadingSpinner from '../Components/LoadingSpinnerSecond';
+import { RiH1 } from 'react-icons/ri';
+// import LoadingSpinner from '../Components/LoadingSpinnerSecond';
 
 
 const AllScholarships = () => {
@@ -61,7 +62,7 @@ const AllScholarships = () => {
       </form>
 
       {/* Loading / Error */}
-      {isLoading && <LoadingSpinner/>}
+      {isLoading && <h1>Loading...</h1>}
       {/* {isError && <p className="text-center text-red-500">Failed to load scholarships.</p>} */}
 
       {/* Scholarships List */}

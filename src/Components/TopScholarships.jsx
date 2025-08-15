@@ -8,32 +8,39 @@ import LoadingSpinner from './LoadingSpinnerSecond';
 const TopScholarships = () => {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);  // Loading state added
-  const [error, setError] = useState(null);      // Optional: error handling
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
+    const fetchTopScholarships = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/top-scholarship`);
 
-    // API কলের জন্য axios ব্যবহার করুন (fetch এর বিকল্প)
-    axios.get(`${import.meta.env.VITE_API_URL}/top-scholarship`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      withCredentials: true // CORS এর জন্য গুরুত্বপূর্ণ
-    })
-      .then(response => {
-        if (response.status !== 200) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        setScholarships(response.data);
+        // প্রতিটি scholarship-এর জন্য rating ফেচ করা
+        const scholarshipsWithRatings = await Promise.all(
+          res.data.map(async (scholarship) => {
+            try {
+              const ratingRes = await axios.get(
+                `${import.meta.env.VITE_API_URL}/reviews/average/${scholarship._id}`
+              );
+              return { ...scholarship, rating: ratingRes.data.average };
+            } catch {
+              return { ...scholarship, rating: null };
+            }
+          })
+        );
+
+        setScholarships(scholarshipsWithRatings);
+      } catch (err) {
+        console.error(err);
+      } finally {
         setLoading(false);
-      })
-      .catch(err => {
-        console.error('Error loading top scholarships:', err);
-        setError(err.message || 'Failed to load scholarships');
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchTopScholarships();
   }, []);
+
+
 
   console.log("VITE_API_URL =", import.meta.env.VITE_API_URL);
   if (loading) {
@@ -42,19 +49,12 @@ const TopScholarships = () => {
     );
   }
 
-  // if (error) {
-  //   return (
-  //     <div className="flex justify-center items-center h-64">
-  //       <p className="text-red-600 text-lg">{error}</p>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="max-w-9xl mx-auto my-12 px-4">
       <div className="text-center max-w-3xl mx-auto my-20">
         <h2 className="text-4xl font-bold text-black mb-2">
-          <MdSchool className="inline text-black mr-2" size={40} /> Top Scholarships for You
+          <MdSchool className="inline text-black mr-2" size={40} /> aa Top Scholarships for You
         </h2>
         <p className="text-gray-700/90 text-md">
           Discover the best hand-picked scholarships offering great value — low application fees and freshly posted opportunities.

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import axios from 'axios';
 import ScholarshipCard from '../Components/ScholarshipCard';
+import Loading from '../Components/Loading';
+
 
 const AllScholarships = () => {
   const [searchText, setSearchText] = useState('');
@@ -32,7 +34,7 @@ const AllScholarships = () => {
         totalPagesCalc = res.data.totalPages;
       }
 
-      // প্রতিটি scholarship এর rating fetch করা
+     
       const scholarshipsWithRatings = await Promise.all(
         scholarshipsData.map(async (scholarship) => {
           try {
@@ -54,7 +56,7 @@ const AllScholarships = () => {
     }
   };
 
-  // page বা query change হলে fetch হবে
+ 
   useEffect(() => {
     fetchScholarships();
   }, [page, query]);
@@ -85,7 +87,7 @@ const AllScholarships = () => {
       </form>
 
       {/* Loading / Error */}
-      {loading && <h1 className="text-center text-xl">Loading...</h1>}
+      {loading && <Loading/>}
       {error && <p className="text-center text-red-500">{error}</p>}
 
       {/* Scholarships List */}

@@ -1,7 +1,7 @@
 // src/components/LoadingSpinner.jsx
 import React from 'react';
 
-const LoadingSpinner = () => {
+const Loading = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-black">
       <div className="relative w-24 h-24">
@@ -13,4 +13,4 @@ const LoadingSpinner = () => {
   );
 };
 
-export default LoadingSpinner;
+export default Loading;

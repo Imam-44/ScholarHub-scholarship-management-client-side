@@ -7,7 +7,7 @@ import LoadingSpinner from './LoadingSpinnerSecond';
 
 const TopScholarships = () => {
   const [scholarships, setScholarships] = useState([]);
-  const [loading, setLoading] = useState(true);  // Loading state added
+  const [loading, setLoading] = useState(true);  
 
   useEffect(() => {
     const fetchTopScholarships = async () => {
@@ -15,7 +15,7 @@ const TopScholarships = () => {
         setLoading(true);
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/top-scholarship`);
 
-        // প্রতিটি scholarship-এর জন্য rating ফেচ করা
+        
         const scholarshipsWithRatings = await Promise.all(
           res.data.map(async (scholarship) => {
             try {
@@ -54,7 +54,7 @@ const TopScholarships = () => {
     <div className="max-w-9xl mx-auto my-12 px-4">
       <div className="text-center max-w-3xl mx-auto my-20">
         <h2 className="text-4xl font-bold text-black mb-2">
-          <MdSchool className="inline text-black mr-2" size={40} /> aa Top Scholarships for You
+          <MdSchool className="inline text-black mr-2" size={40} />  Top Scholarships for You
         </h2>
         <p className="text-gray-700/90 text-md">
           Discover the best hand-picked scholarships offering great value — low application fees and freshly posted opportunities.

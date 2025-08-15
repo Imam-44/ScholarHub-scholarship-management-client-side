@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import axios from 'axios';
 import ScholarshipCard from '../Components/ScholarshipCard';
-import Loading from '../Components/Loading';
+import LoadingSpinner from '../Components/LoadingSpinnerSecond';
 
 
 const AllScholarships = () => {
@@ -87,7 +87,7 @@ const AllScholarships = () => {
       </form>
 
       {/* Loading / Error */}
-      {loading && <Loading/>}
+      {loading && <LoadingSpinner/>}
       {error && <p className="text-center text-red-500">{error}</p>}
 
       {/* Scholarships List */}

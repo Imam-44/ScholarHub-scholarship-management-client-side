@@ -58,9 +58,7 @@ const ScholarshipCard = ({ scholarship }) => {
       {/* Category & Rating */}
       <div className="text-sm text-center text-yellow-400 mb-3 space-x-2">
         <p>📂 Scholarship Category: {scholarship.scholarshipCategory}</p>
-        {loadingRating ? (
-          <p className="text-gray-400">Loading rating...</p>
-        ) : typeof rating === 'number' ? (
+         {typeof rating === 'number' ? (
           <p>Rating: ⭐ {rating.toFixed(1)}</p>
         ) : (
           <p className="text-gray-400">No rating available</p>

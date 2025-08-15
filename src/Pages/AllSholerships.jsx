@@ -1,42 +1,65 @@
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import axios from 'axios';
 import ScholarshipCard from '../Components/ScholarshipCard';
-import { RiH1 } from 'react-icons/ri';
-// import LoadingSpinner from '../Components/LoadingSpinnerSecond';
-
 
 const AllScholarships = () => {
   const [searchText, setSearchText] = useState('');
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
-  const limit = 6; 
-  
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['scholarships', query, page],
-    queryFn: async () => {
-      const baseURL = import.meta.env.VITE_API_URL;
+  const [scholarships, setScholarships] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const limit = 6;
+
+  const fetchScholarships = async () => {
+    setLoading(true);
+    setError(null);
+
+    const baseURL = import.meta.env.VITE_API_URL;
+
+    try {
+      let scholarshipsData;
+      let totalPagesCalc = 1;
+
       if (query) {
-        // search ignores pagination
         const res = await axios.get(`${baseURL}/search-scholarship?query=${query}`);
-        return { scholarships: res.data, totalPages: 1 };
+        scholarshipsData = res.data;
       } else {
-        // paginated fetch
         const res = await axios.get(`${baseURL}/scholarship?page=${page}&limit=${limit}`);
-        return {
-          scholarships: res.data.scholarships,
-          totalPages: res.data.totalPages
-        };
+        scholarshipsData = res.data.scholarships;
+        totalPagesCalc = res.data.totalPages;
       }
-    },
-    keepPreviousData: true
-  });
 
-  const scholarships = data?.scholarships || [];
-  const totalPages = data?.totalPages || 1;
+      // প্রতিটি scholarship এর rating fetch করা
+      const scholarshipsWithRatings = await Promise.all(
+        scholarshipsData.map(async (scholarship) => {
+          try {
+            const ratingRes = await axios.get(`${baseURL}/reviews/average/${scholarship._id}`);
+            return { ...scholarship, rating: ratingRes.data.average };
+          } catch (err) {
+            return { ...scholarship, rating: null };
+          }
+        })
+      );
 
-  const handleSearch = e => {
+      setScholarships(scholarshipsWithRatings);
+      setTotalPages(totalPagesCalc);
+    } catch (err) {
+      console.error(err);
+      setError('Failed to load scholarships');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // page বা query change হলে fetch হবে
+  useEffect(() => {
+    fetchScholarships();
+  }, [page, query]);
+
+  const handleSearch = (e) => {
     e.preventDefault();
     setPage(1);
     setQuery(searchText.trim());
@@ -50,7 +73,7 @@ const AllScholarships = () => {
           type="text"
           placeholder="Search by name, university, or degree"
           value={searchText}
-          onChange={e => setSearchText(e.target.value)}
+          onChange={(e) => setSearchText(e.target.value)}
           className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none"
         />
         <button
@@ -62,55 +85,54 @@ const AllScholarships = () => {
       </form>
 
       {/* Loading / Error */}
-      {isLoading && <h1>Loading...</h1>}
-      {/* {isError && <p className="text-center text-red-500">Failed to load scholarships.</p>} */}
+      {loading && <h1 className="text-center text-xl">Loading...</h1>}
+      {error && <p className="text-center text-red-500">{error}</p>}
 
       {/* Scholarships List */}
-      {scholarships.length > 0 ? (
+      {scholarships.length > 0 && !loading ? (
         <>
           <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
-            {scholarships.map(s => (
+            {scholarships.map((s) => (
               <ScholarshipCard key={s._id} scholarship={s} />
             ))}
           </div>
 
           {/* Pagination Controls (only when not searching) */}
-          
           {!query && totalPages > 1 && (
             <div className="flex justify-center items-center gap-2 mt-10">
               <button
-                onClick={() => setPage(old => Math.max(1, old - 1))}
+                onClick={() => setPage((old) => Math.max(1, old - 1))}
                 disabled={page === 1}
-                className={`px-4 py-2 rounded-md transition font-medium ${page === 1
+                className={`px-4 py-2 rounded-md transition font-medium ${
+                  page === 1
                     ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     : 'bg-gradient-to-r from-amber-500 to-amber-700 text-white hover:from-red-800 hover:to-red-900 cursor-pointer'
-                  }`}
+                }`}
               >
                 Prev
               </button>
 
-              {/* Page Number Display */}
               <span className="text-lg font-semibold px-3">
                 Page <span className="text-amber-600">{page}</span> of{' '}
                 <span className="text-amber-600">{totalPages}</span>
               </span>
 
               <button
-                onClick={() => setPage(old => Math.min(totalPages, old + 1))}
+                onClick={() => setPage((old) => Math.min(totalPages, old + 1))}
                 disabled={page === totalPages}
-                className={`px-4 py-2 rounded-md transition font-medium ${page === totalPages
+                className={`px-4 py-2 rounded-md transition font-medium ${
+                  page === totalPages
                     ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     : 'bg-gradient-to-r from-amber-500 to-amber-700 text-white hover:from-red-800 hover:to-red-900 cursor-pointer'
-                  }`}
+                }`}
               >
                 Next
               </button>
             </div>
           )}
-
         </>
       ) : (
-        !isLoading && (
+        !loading && (
           <div className="text-center mt-20">
             <img src="/no-data.svg" alt="No scholarship found" className="w-60 mx-auto mb-4" />
             <p className="text-gray-500 text-lg">No scholarships found.</p>

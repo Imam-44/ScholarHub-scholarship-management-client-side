@@ -3,7 +3,7 @@ import ModeratorMenu from './Menu/ModeratorMenu';
 import AdminMenu from './Menu/AdminMenu';
 import useRole from '../hooks/useRole';
 import { useState, useEffect } from 'react';
-import LoadingSpinner from '../components/LoadingSpinner';
+import LoadingSpinner from '../components/LoadingSpinner.jsx';
 import { Link } from 'react-router-dom';  
 import { FaHome } from 'react-icons/fa';
 

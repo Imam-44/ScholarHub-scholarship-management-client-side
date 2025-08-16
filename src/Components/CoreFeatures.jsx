@@ -27,7 +27,7 @@ const features = [
 
 const CoreFeatures = () => {
   return (
-    <div className="bg-red-950 py-16 px-6 md:px-12 my-12 rounded-2xl shadow-md">
+    <div className="bg-gradient-to-br from-red-900 via-red-950 to-black py-16 px-6 md:px-12 my-12 rounded-2xl shadow-md">
       <div className="text-center mb-12">
         <h2 className="text-4xl font-bold text-white mb-2">Our Core Features</h2>
         <p className="text-white/60 max-w-2xl mx-auto">

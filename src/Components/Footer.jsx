@@ -1,19 +1,19 @@
 import React from 'react';
-import { FaFacebookF, FaLinkedinIn, FaTwitter, FaInstagram, FaGraduationCap } from 'react-icons/fa';
+import { FaFacebookF, FaLinkedinIn, FaTwitter, FaInstagram } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="px-6 pt-8 md:px-16 lg:px-36 w-full text-gray-300 bg-gradient-to-r from-red-800 via-black to-red-800">
+    <footer className="px-6 pt-8 md:px-16 lg:px-36 w-full text-gray-300 bg-gradient-to-br from-black via-red-950 to-black">
       <div className="flex flex-col md:flex-row justify-between w-full gap-10 border-b border-gray-500 pb-10">
         {/* Left side: logo & description */}
         <div className="md:max-w-96">
-      <div className='flex gap-1'>
-          <img src="../logo3.png" alt="" className='w-12 h-12'/>
-          <h1 className="text-4xl text-amber-100 font-bold">ScholarHub</h1>
-      </div>
+          <div className='flex gap-1 items-center'>
+            <img src="../logo3.png" alt="" className='w-12 h-12'/>
+            <h1 className="text-4xl text-white font-bold">ScholarHub</h1>
+          </div>
           <p className="mt-6 text-sm">
-            ScholarHub is your one-stop solution for finding top scholarships worldwide with trusted reviews and secure applications.
+            ScholarHub helps students explore scholarships, apply with ease, and achieve their study goals worldwide.
           </p>
 
           {/* Social Icons */}
@@ -33,21 +33,19 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Right side: menu */}
+        {/* Right side: unique menu */}
         <div className="flex-1 flex items-start md:justify-end gap-20 md:gap-40">
           <div>
-            <h2 className="font-semibold mb-5">Quick Links</h2>
+            <h2 className="font-semibold mb-5">Resources</h2>
             <ul className="text-sm space-y-2">
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/all-scholarship">All Scholarships</Link></li>
-              <li><Link to="/dashboard">Dashboard</Link></li>
-              <li><Link to="/reviews">Reviews</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
+              <li><Link to="/all-scholarships">All-scholarship</Link></li>
+              <li><Link to="/faq">FAQ</Link></li>
+              <li><Link to="/webinars">Webinars</Link></li>
             </ul>
           </div>
 
           <div>
-            <h2 className="font-semibold mb-5">Get in Touch</h2>
+            <h2 className="font-semibold mb-5">Support</h2>
             <div className="text-sm space-y-2">
               <p>+880-1234-567890</p>
               <p>support@scholarhub.com</p>

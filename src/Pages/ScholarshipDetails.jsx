@@ -11,6 +11,7 @@ import { Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import useAxiosSecure from '../hooks/useAxiosSecure';
+import LoadingSpinner from '../Components/LoadingSpinnerSecond';
 
 // Star rating component for visual
 const StarRating = ({ rating }) => {
@@ -75,7 +76,7 @@ const ScholarshipDetails = () => {
     }
   };
 
-  if (!scholarship) return <p className="text-center mt-20 text-lg">Loading...</p>;
+  if (!scholarship) return <LoadingSpinner/>;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">

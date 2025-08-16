@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import CheckoutForm from '../Components/CheckoutForm';
+import LoadingSpinner from '../Components/LoadingSpinnerSecond';
 
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
@@ -19,7 +20,7 @@ const CheckoutPage = () => {
    
   }, [id]);
 
-  if (!scholarship) return <p className="text-center mt-20">Loading...</p>;
+  if (!scholarship) return <LoadingSpinner/>;
 
   return (
     <div className="max-w-4xl mx-auto  px-4 py-10">

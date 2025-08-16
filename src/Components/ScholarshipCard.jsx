@@ -31,7 +31,7 @@ const ScholarshipCard = ({ scholarship }) => {
     <div className="bg-gradient-to-br from-red-900 via-red-950 to-black text-white rounded-2xl shadow-lg hover:shadow-amber-900 transition duration-300 p-6 border border-red-800">
       {/* University Logo */}
       <div className="flex justify-center mb-4">
-        <div className="w-full h-[250px] rounded-xl shadow-lg border-2 border-amber-500">
+        <div className="w-full h-[250px] rounded-xl shadow-lg border-2 border-amber-400">
           <img
             src={scholarship.universityImage}
             alt="University Logo"

@@ -10,7 +10,7 @@ const AllAppliedScholarships = () => {
   const [feedbackId, setFeedbackId] = useState(null);
   const [sortBy, setSortBy] = useState('');
 
-  const { data: applications = [], isLoading, refetch } = useQuery({
+  const { data: fetchedApplications = [], isLoading, refetch } = useQuery({
     queryKey: ['allApplications'],
     queryFn: async () => {
       const res = await axiosSecure.get('/all-applications');
@@ -18,16 +18,22 @@ const AllAppliedScholarships = () => {
     },
   });
 
-  const sortedApplications = [...applications].sort((a, b) => {
-  if (sortBy === 'appliedDate') {
-    return new Date(b.date) - new Date(a.date);
-  } else if (sortBy === 'deadline') {
-    return new Date(b.scholarshipDeadline) - new Date(a.scholarshipDeadline);
-  } else {
-    return 0;
-  }
-});
+  // Local state for immediate UI updates
+  const [applications, setApplications] = useState([]);
 
+  useEffect(() => {
+    setApplications(fetchedApplications);
+  }, [fetchedApplications]);
+
+  const sortedApplications = [...applications].sort((a, b) => {
+    if (sortBy === 'appliedDate') {
+      return new Date(b.date) - new Date(a.date);
+    } else if (sortBy === 'deadline') {
+      return new Date(b.scholarshipDeadline) - new Date(a.scholarshipDeadline);
+    } else {
+      return 0;
+    }
+  });
 
   const handleDetails = (app) => setSelectedApp(app);
   const closeDetails = () => setSelectedApp(null);
@@ -66,16 +72,19 @@ const AllAppliedScholarships = () => {
           status: 'rejected',
         });
         Swal.fire('Cancelled', 'Application has been rejected.', 'success');
-        refetch();
+        setApplications((prev) =>
+          prev.map((app) => (app._id === id ? { ...app, status: 'rejected' } : app))
+        );
       } catch (error) {
         Swal.fire('Error', 'Failed to cancel application.', 'error');
       }
     }
   };
+
   const handleProcessing = async (id) => {
     const result = await Swal.fire({
       title: 'Are you sure?',
-      text: 'Do you want to processing this application?',
+      text: 'Do you want to process this application?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, processing it!',
@@ -86,20 +95,23 @@ const AllAppliedScholarships = () => {
         await axiosSecure.patch(`/application-status/${id}`, {
           status: 'processing',
         });
-        Swal.fire('processing start', 'Application has been processing.', 'success');
-        refetch();
+        Swal.fire('Processing started', 'Application is now processing.', 'success');
+        setApplications((prev) =>
+          prev.map((app) => (app._id === id ? { ...app, status: 'processing' } : app))
+        );
       } catch (error) {
-        Swal.fire('Error', 'Failed to cancel application.', 'error');
+        Swal.fire('Error', 'Failed to update application.', 'error');
       }
     }
   };
+
   const handleCompleted = async (id) => {
     const result = await Swal.fire({
       title: 'Are you sure?',
-      text: 'Do you want to completed this application?',
+      text: 'Do you want to complete this application?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, completed it!',
+      confirmButtonText: 'Yes, complete it!',
     });
 
     if (result.isConfirmed) {
@@ -107,15 +119,36 @@ const AllAppliedScholarships = () => {
         await axiosSecure.patch(`/application-status/${id}`, {
           status: 'completed',
         });
-        Swal.fire('completed done', 'Application has been completed.', 'success');
-        refetch();
+        Swal.fire('Completed', 'Application has been completed.', 'success');
+        setApplications((prev) =>
+          prev.map((app) => (app._id === id ? { ...app, status: 'completed' } : app))
+        );
       } catch (error) {
-        Swal.fire('Error', 'Failed to cancel application.', 'error');
+        Swal.fire('Error', 'Failed to update application.', 'error');
       }
     }
   };
 
-  // ✅ Loading Text
+  const handleDelete = async (id) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this application?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axiosSecure.delete(`/delete-application/${id}`);
+        Swal.fire('Deleted!', 'Application has been deleted.', 'success');
+        setApplications((prev) => prev.filter((app) => app._id !== id));
+      } catch (error) {
+        Swal.fire('Error', 'Failed to delete application.', 'error');
+      }
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-[200px] text-xl font-semibold text-blue-600">
@@ -123,11 +156,10 @@ const AllAppliedScholarships = () => {
       </div>
     );
   }
+
   return (
     <div className="p-6 bg-white rounded-xl shadow-md">
-      <h2 className="text-3xl font-semibold mb-6 text-slate-800">
-        📋 All Application
-      </h2>
+      <h2 className="text-3xl font-semibold mb-6 text-slate-800">📋 All Applications</h2>
 
       <div className="flex justify-center mb-6">
         <select
@@ -140,7 +172,6 @@ const AllAppliedScholarships = () => {
           <option value="deadline">⏳ Scholarship Deadline</option>
         </select>
       </div>
-
 
       <div className="overflow-x-auto">
         <table className="table-auto w-full text-left border border-gray-200">
@@ -161,14 +192,15 @@ const AllAppliedScholarships = () => {
                 <td className="px-4 py-2">{app.degree}</td>
                 <td className="px-4 py-2">
                   <span
-                    className={`inline-block px-3 py-1 rounded-full text-xs font-semibold text-white ${app.status === 'pending'
-                      ? 'bg-yellow-500'
-                      : app.status === 'processing'
+                    className={`inline-block px-3 py-1 rounded-full text-xs font-semibold text-white ${
+                      app.status === 'pending'
+                        ? 'bg-yellow-500'
+                        : app.status === 'processing'
                         ? 'bg-blue-600'
                         : app.status === 'completed'
-                          ? 'bg-green-600'
-                          : 'bg-red-500'
-                      }`}
+                        ? 'bg-green-600'
+                        : 'bg-red-500'
+                    }`}
                   >
                     {app.status}
                   </span>
@@ -190,13 +222,13 @@ const AllAppliedScholarships = () => {
                     onClick={() => handleProcessing(app._id)}
                     className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded cursor-pointer"
                   >
-                    Procecing
+                    Processing
                   </button>
                   <button
                     onClick={() => handleCompleted(app._id)}
                     className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-sm rounded cursor-pointer"
                   >
-                  Completed
+                    Completed
                   </button>
                   <button
                     onClick={() => handleCancel(app._id)}
@@ -204,7 +236,12 @@ const AllAppliedScholarships = () => {
                   >
                     Cancel
                   </button>
-
+                  <button
+                    onClick={() => handleDelete(app._id)}
+                    className="px-3 py-1 my-1 bg-gray-700 hover:bg-gray-800 text-white text-sm rounded cursor-pointer"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -224,11 +261,21 @@ const AllAppliedScholarships = () => {
             </button>
             <h3 className="text-lg font-semibold mb-4 text-slate-700">🎓 Application Details</h3>
             <div className="space-y-2 text-sm text-gray-700">
-              <p><strong>University:</strong> {selectedApp.universityName}</p>
-              <p><strong>Degree:</strong> {selectedApp.degree}</p>
-              <p><strong>Category:</strong> {selectedApp.scholarshipCategory}</p>
-              <p><strong>Applicant Email:</strong> {selectedApp.userEmail}</p>
-              <p><strong>Applied On:</strong> {new Date(selectedApp.date).toDateString()}</p>
+              <p>
+                <strong>University:</strong> {selectedApp.universityName}
+              </p>
+              <p>
+                <strong>Degree:</strong> {selectedApp.degree}
+              </p>
+              <p>
+                <strong>Category:</strong> {selectedApp.scholarshipCategory}
+              </p>
+              <p>
+                <strong>Applicant Email:</strong> {selectedApp.userEmail}
+              </p>
+              <p>
+                <strong>Applied On:</strong> {new Date(selectedApp.date).toDateString()}
+              </p>
             </div>
           </div>
         </div>

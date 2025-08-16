@@ -23,6 +23,9 @@ import ManageUsers from "../Dashboard/AdminDashboard.jsx/ManageUsers ";
 import ManageScholarships from "../Dashboard/Common/ManageScholarships ";
 import NotFound from "../Components/NotFound";
 import AdminAnalytics from "../Dashboard/AdminDashboard.jsx/AdminAnalytics";
+import FAQSection from "../Components/FAQSection";
+import Webinars from "../Pages/Webinars";
+
 
 
 
@@ -54,6 +57,14 @@ const router = createBrowserRouter([
       {
         path: '/checkout/:id',
         element: <CheckoutPage />
+      },
+      {
+        path: '/faq',
+        element: <FAQSection />
+      },
+      {
+        path: '/webinars',
+        Component: Webinars
       }
     ]
   },

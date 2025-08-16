@@ -27,7 +27,7 @@ const successStories = [
 
 const StudentSuccessStories = () => {
   return (
-    <div className="bg-gradient-to-br from-red-900 via-red-950 to-black py-16 px-6 md:px-12 my-16 rounded-3xl shadow-2xl">
+    <div id="student-success" className="bg-gradient-to-br from-red-900 via-red-950 to-black py-16 px-6 md:px-12 my-16 rounded-3xl shadow-2xl">
       {/* Heading */}
       <div className="text-center mb-14">
         <h2 className="text-4xl font-bold text-white flex items-center justify-center gap-3">

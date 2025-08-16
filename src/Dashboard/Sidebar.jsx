@@ -5,7 +5,8 @@ import useRole from '../hooks/useRole';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';  
 import { FaHome } from 'react-icons/fa';
-import LoadingSpinner from '../Components/LoadingSpinnerSecond';
+import Loading from '../Components/Loading';
+
 
 
 const Sidebar = () => {
@@ -17,7 +18,7 @@ const Sidebar = () => {
   }, []);
 
   if (isLoading || !mounted) {
-    return <LoadingSpinner/>;
+    return <Loading/>;
   }
 
   return (

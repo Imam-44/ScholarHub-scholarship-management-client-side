@@ -24,8 +24,8 @@ const Navbar = () => {
 
   const navLinkClass = ({ isActive }) =>
     isActive
-      ? 'text-amber-600 border-b-4 border-amber-600 pb-1 font-semibold text-lg'
-      : 'hover:text-amber-600 transition';
+      ? 'text-amber-400 border-b-4 border-amber-400 pb-1 font-semibold text-lg'
+      : 'hover:text-amber-500 transition';
 
   const handleSignOut = async () => {
     try {
@@ -41,18 +41,21 @@ const Navbar = () => {
 
 
   return (
-    <nav className="bg-gradient-to-r from-red-700 via-black to-red-700 shadow-md px-6 py-4 relative z-50 sticky top-0" role="navigation" aria-label="Main navigation">
+    <nav className="bg-gradient-to-br from-black via-amber-950 to-black shadow-md px-6 py-4 relative z-50 sticky top-0" role="navigation" aria-label="Main navigation">
       <div className="w-11/12 max-w-screen-2xl mx-auto flex justify-between items-center ">
         {/* Logo */}
         <div className='flex gap-2 items-center'>
           <img src="/logo3.png" alt="logo" className='w-12 h-12' />
-          <Link to="/" className="text-4xl font-bold text-amber-100" aria-label="ScholarX Home">ScholarHub</Link>
+          <Link to="/" className="text-4xl font-bold text-white" aria-label="ScholarX Home">ScholarHub</Link>
         </div>
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex items-center gap-6 text-white font-medium text-lg">
           <li><NavLink to="/" className={navLinkClass} aria-label="Home">Home</NavLink></li>
           <li><NavLink to="/all-scholarships" className={navLinkClass} aria-label="all-scholarship">All Scholarships</NavLink></li>
+          
+          <li><NavLink to="/faq" className={navLinkClass} aria-label="/faq">FAQ</NavLink></li>
+           
 
           {user && (
             <>
@@ -86,19 +89,19 @@ const Navbar = () => {
               {/* Profile Picture with Tooltip */}
               <li className="relative group">
                 <img
-                  className="w-10 h-10 rounded-full border-2 border-amber-500 object-cover cursor-pointer"
+                  className="w-10 h-10 rounded-full border-2 border-amber-400 object-cover cursor-pointer"
                   src={user.photoURL}
                   alt="User profile"
                   aria-label="User profile"
                 />
-                <div className="hidden md:block absolute bottom-full left-1/2 -translate-x-1/2 -mb-2 bg-amber-600 text-white px-3 py-1 rounded shadow-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-50">
+                <div className="hidden md:block absolute bottom-full left-1/2 -translate-x-1/2 -mb-2 bg-amber-400 text-white px-3 py-1 rounded shadow-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-50">
                   {user.displayName}
                 </div>
               </li>
               <li>
                 <button
                   onClick={handleSignOut}
-                  className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition cursor-pointer"
+                  className="bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 transition cursor-pointer"
                   aria-label="Sign out"
                 >
                   Sign Out

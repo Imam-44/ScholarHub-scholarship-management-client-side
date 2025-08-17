@@ -1,28 +1,27 @@
-// hooks/useAxiosSecure.jsx
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-const axiosSecure = axios.create({
+export const axiosSecure = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true, // ✅ Cookie পাঠানোর জন্য
+  withCredentials: true, 
 });
 
 const useAxiosSecure = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const responseInterceptor = axiosSecure.interceptors.response.use(
+    const interceptor = axiosSecure.interceptors.response.use(
       (response) => response,
       (error) => {
         if (error.response?.status === 401) {
-          navigate('/signin'); // unauthorized হলে login page
+          navigate("/signin"); 
         }
         return Promise.reject(error);
       }
     );
 
-    return () => axiosSecure.interceptors.response.eject(responseInterceptor);
+    return () => axiosSecure.interceptors.response.eject(interceptor);
   }, [navigate]);
 
   return axiosSecure;

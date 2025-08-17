@@ -6,12 +6,16 @@ import useAuth from '../hooks/useAuth';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import { FaGoogle } from 'react-icons/fa';
-import { axiosSecure } from '../Components/AuthProvider';
+import useAxiosSecure from '../hooks/useAxiosSecure';
+
+
+
 
 
 const SignIn = () => {
-  const { signIn, signInWithGoogle } = useAuth();
+  const { signIn, signInWithGoogle, setUser } = useAuth();
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure(); 
 
   // Normal email/password login
   const handleSubmit = async (e) => {
@@ -24,8 +28,9 @@ const SignIn = () => {
       const result = await signIn(email, password);
       const user = result.user;
 
-      await axiosSecure.post("/jwt", { email: user.email });
 
+      await axiosSecure.post("/jwt", { email: user.email });
+       setUser(user);
       toast.success('Logged in successfully!');
       navigate('/');
     } catch (error) {
@@ -40,15 +45,19 @@ const SignIn = () => {
       const result = await signInWithGoogle();
       const user = result.user;
 
+    
       await axiosSecure.post("/jwt", { email: user.email });
 
-      toast.success('Logged in successfully!');
-      navigate('/');
+      setUser(user);
+
+      toast.success("Logged in successfully!");
+      navigate("/");
     } catch (err) {
       console.error(err);
       toast.error(err.message);
     }
   };
+
 
   // Admin/Moderator login with hardcoded credentials
   const handleRoleSignIn = async (role) => {
@@ -77,7 +86,6 @@ const SignIn = () => {
       toast.error(error.message);
     }
   };
-
   return (
     <div className="bg-gradient-to-r from-amber-300 via-yellow-150 to-amber-900 min-h-screen flex items-center justify-center">
       <div className="w-11/12 max-w-screen-2xl mx-auto flex h-[700px] my-5 rounded-xl shadow-lg overflow-hidden bg-white/90">
@@ -142,24 +150,24 @@ const SignIn = () => {
             </div>
 
             {/* Admin/Moderator Buttons */}
-        <div className='w-full'>
+            <div className='w-full'>
 
-               <button
-              type="button"
-              onClick={() => handleRoleSignIn("admin")}
-              className="mt-4 w-full h-11 cursor-pointer rounded-full text-white bg-red-900 hover:opacity-90"
-            >
-              Login as Admin
-            </button>
+              <button
+                type="button"
+                onClick={() => handleRoleSignIn("admin")}
+                className="mt-4 w-full h-11 cursor-pointer rounded-full text-white bg-red-900 hover:opacity-90"
+              >
+                Login as Admin
+              </button>
 
-            <button
-              type="button"
-              onClick={() => handleRoleSignIn("moderator")}
-              className="mt-2 w-full h-11 cursor-pointer rounded-full text-white bg-amber-700 hover:opacity-90"
-            >
-              Login as Moderator
-            </button>
-        </div>
+              <button
+                type="button"
+                onClick={() => handleRoleSignIn("moderator")}
+                className="mt-2 w-full h-11 cursor-pointer rounded-full text-white bg-amber-700 hover:opacity-90"
+              >
+                Login as Moderator
+              </button>
+            </div>
 
             {/* Remember & Forgot */}
             <div className="w-full flex items-center justify-between mt-8 text-gray-500/80">

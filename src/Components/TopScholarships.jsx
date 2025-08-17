@@ -53,10 +53,10 @@ const TopScholarships = () => {
   return (
     <div className="max-w-9xl mx-auto my-12 px-4">
       <div className="text-center max-w-3xl mx-auto my-20">
-        <h2 className="text-4xl font-bold text-black mb-2">
-          <MdSchool className="inline text-black mr-2" size={40} />  Top Scholarships for You
+        <h2 className="text-4xl font-bold text-base-content   mb-2">
+          <MdSchool className="inline text-amber-400 mr-2" size={40} />  Top Scholarships for You
         </h2>
-        <p className="text-gray-700/90 text-md">
+        <p className="text-base-content/70 text-md">
           Discover the best hand-picked scholarships offering great value — low application fees and freshly posted opportunities.
         </p>
       </div>

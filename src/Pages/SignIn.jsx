@@ -5,13 +5,15 @@ import { Link, useNavigate } from 'react-router';
 import useAuth from '../hooks/useAuth';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
-import { FaGoogle } from 'react-icons/fa'
-import axios from 'axios';
+import { FaGoogle } from 'react-icons/fa';
+import { axiosSecure } from '../Components/AuthProvider';
+
 
 const SignIn = () => {
-  const { signIn, signInWithGoogle } = useAuth()
-  const navigate = useNavigate()
+  const { signIn, signInWithGoogle } = useAuth();
+  const navigate = useNavigate();
 
+  // Normal email/password login
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -21,15 +23,10 @@ const SignIn = () => {
     try {
       const result = await signIn(email, password);
       const user = result.user;
-      console.log("Firebase User:", result.user);
-      // Server এ JWT generate
-      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, { email: user.email });
-      console.log("JWT Response:", data);
 
-  
-      localStorage.setItem('access-token', data.accessToken);
-      localStorage.setItem('refresh-token', data.refreshToken);
+      await axiosSecure.post("/jwt", { email: user.email });
 
+      toast.success('Logged in successfully!');
       navigate('/');
     } catch (error) {
       console.error("Login Error:", error);
@@ -37,21 +34,50 @@ const SignIn = () => {
     }
   };
 
-
+  // Google login
   const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithGoogle();
+      const user = result.user;
+
+      await axiosSecure.post("/jwt", { email: user.email });
+
+      toast.success('Logged in successfully!');
+      navigate('/');
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message);
+    }
+  };
+
+  // Admin/Moderator login with hardcoded credentials
+  const handleRoleSignIn = async (role) => {
+    let email, password;
+
+    if (role === "admin") {
+      email = "admin@gmail.com";
+      password = "Admin%";
+    } else if (role === "moderator") {
+      email = "moderator@gmail.com";
+      password = "Moderator%";
+    } else {
+      return;
+    }
 
     try {
-      const result = await signInWithGoogle()
-      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, { email: result.user.email });
-      localStorage.setItem('access-token', data.accessToken);
-      toast.success('Logged in successfully!')
-      navigate('/')
-    } catch (err) {
-      if (err) {
-        toast.error(err.message)
-      }
+      const result = await signIn(email, password);
+      const user = result.user;
+
+      await axiosSecure.post("/jwt", { email: user.email, role });
+
+      toast.success(`Logged in as ${role}`);
+      navigate("/");
+    } catch (error) {
+      console.error("Role Login Error:", error);
+      toast.error(error.message);
     }
-  }
+  };
+
   return (
     <div className="bg-gradient-to-r from-amber-300 via-yellow-150 to-amber-900 min-h-screen flex items-center justify-center">
       <div className="w-11/12 max-w-screen-2xl mx-auto flex h-[700px] my-5 rounded-xl shadow-lg overflow-hidden bg-white/90">
@@ -73,10 +99,13 @@ const SignIn = () => {
               Welcome back! Please sign in to continue
             </p>
 
-            <button onClick={handleGoogleSignIn}
+            {/* Google Login */}
+            <button
+              onClick={handleGoogleSignIn}
               type="button"
               className="w-full mt-8 bg-amber-500/10 flex items-center justify-center h-12 rounded-full cursor-pointer"
-            > <FaGoogle className="text-amber-600" />
+            >
+              <FaGoogle className="text-amber-600" />
               <h2 className='ml-1'>Login With Google</h2>
             </button>
 
@@ -111,6 +140,26 @@ const SignIn = () => {
                 required
               />
             </div>
+
+            {/* Admin/Moderator Buttons */}
+        <div className='w-full'>
+
+               <button
+              type="button"
+              onClick={() => handleRoleSignIn("admin")}
+              className="mt-4 w-full h-11 cursor-pointer rounded-full text-white bg-red-900 hover:opacity-90"
+            >
+              Login as Admin
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleRoleSignIn("moderator")}
+              className="mt-2 w-full h-11 cursor-pointer rounded-full text-white bg-amber-700 hover:opacity-90"
+            >
+              Login as Moderator
+            </button>
+        </div>
 
             {/* Remember & Forgot */}
             <div className="w-full flex items-center justify-between mt-8 text-gray-500/80">

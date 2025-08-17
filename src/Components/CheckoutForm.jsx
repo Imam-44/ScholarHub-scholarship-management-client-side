@@ -182,13 +182,13 @@ const CheckoutForm = ({ scholarship }) => {
       onSubmit={handleSubmit}
       className="space-y-6 bg-white p-8 rounded-3xl shadow-md shadow-red-950/20 max-w-3xl mx-auto"
     >
-      <h2 className="text-2xl font-bold text-red-950 mb-6 border-b-2 border-amber-600 pb-2">
+      <h2 className="text-2xl font-bold  text-red-950 mb-6 border-b-2 border-amber-600 pb-2">
         Applicant Information
       </h2>
 
       <div className="grid md:grid-cols-2 gap-6">
         <div>
-          <label className="block mb-1 font-medium text-red-950">Phone</label>
+          <label className="block mb-1 font-medium  text-red-950">Phone</label>
           <input
             type="text"
             name="phone"
@@ -196,7 +196,7 @@ const CheckoutForm = ({ scholarship }) => {
             required
             onChange={handleChange}
             placeholder="Phone Number"
-            className="w-full px-4 py-2 rounded-lg border border-amber-600 focus:outline-none focus:border-red-950 shadow-sm transition duration-300"
+            className="w-full px-4 py-2 rounded-lg border border-amber-600 text-amber-700 focus:outline-none focus:border-red-950 shadow-sm transition duration-300"
           />
         </div>
 
@@ -208,7 +208,7 @@ const CheckoutForm = ({ scholarship }) => {
             accept="image/*"
             onChange={handleImageUpload}
             ref={fileInputRef}
-            className="w-full px-4 py-2 border border-amber-600 rounded-lg shadow-sm cursor-pointer"
+            className="w-full px-4 py-2 border border-amber-600/60 text-amber-700  rounded-lg shadow-sm cursor-pointer"
           />
           {uploading && <p className="text-sm text-amber-700 mt-1">Uploading...</p>}
           {formData.photo && (
@@ -225,7 +225,7 @@ const CheckoutForm = ({ scholarship }) => {
             required
             onChange={handleChange}
             placeholder="Full Address"
-            className="w-full px-4 py-2 rounded-lg border border-amber-600 focus:outline-none focus:border-red-950 shadow-sm transition duration-300"
+            className="w-full px-4 py-2 rounded-lg border border-amber-600 text-amber-700 focus:outline-none focus:border-red-950 shadow-sm transition duration-300"
           />
         </div>
 
@@ -236,7 +236,7 @@ const CheckoutForm = ({ scholarship }) => {
             value={formData.gender}
             required
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg border border-amber-600 focus:outline-none focus:border-red-950 shadow-sm transition duration-300"
+            className="w-full px-4 py-2 rounded-lg border border-amber-600 text-amber-700/60 focus:outline-none focus:border-red-950 shadow-sm transition duration-300"
           >
             <option value="" disabled>Select Gender</option>
             <option>Male</option>
@@ -252,7 +252,7 @@ const CheckoutForm = ({ scholarship }) => {
             value={formData.degree}
             required
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg border border-amber-600 focus:outline-none focus:border-red-950 shadow-sm transition duration-300"
+            className="w-full px-4 py-2 rounded-lg border border-amber-600 text-amber-700/60 focus:outline-none focus:border-red-950 shadow-sm transition duration-300"
           >
             <option value="" disabled>Choose Degree</option>
             <option>Diploma</option>
@@ -273,7 +273,7 @@ const CheckoutForm = ({ scholarship }) => {
             min="1"
             max="5"
             step="0.1"
-            className="w-full px-4 py-2 rounded-lg border border-amber-600 focus:outline-none focus:border-red-950 shadow-sm transition duration-300"
+            className="w-full px-4 py-2 rounded-lg border border-amber-600 text-amber-700 focus:outline-none focus:border-red-950 shadow-sm transition duration-300"
           />
         </div>
 
@@ -289,7 +289,7 @@ const CheckoutForm = ({ scholarship }) => {
             min="1"
             max="5"
             step="0.1"
-            className="w-full px-4 py-2 rounded-lg border border-amber-600 focus:outline-none focus:border-red-950 shadow-sm transition duration-300"
+            className="w-full px-4 py-2 rounded-lg border border-amber-600 text-amber-700 focus:outline-none focus:border-red-950 shadow-sm transition duration-300"
           />
         </div>
 
@@ -299,7 +299,7 @@ const CheckoutForm = ({ scholarship }) => {
             name="studyGap"
             value={formData.studyGap}
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg border border-amber-600 focus:outline-none focus:border-red-950 shadow-sm transition duration-300"
+            className="w-full px-4 py-2 rounded-lg border border-amber-600 text-amber-700/60 focus:outline-none focus:border-red-950 shadow-sm transition duration-300"
           >
             <option value="" disabled>Study Gap (optional)</option>
             <option>None</option>

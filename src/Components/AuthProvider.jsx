@@ -1,13 +1,5 @@
-import { 
-  createUserWithEmailAndPassword, 
-  getAuth, 
-  GoogleAuthProvider, 
-  onAuthStateChanged, 
-  signInWithEmailAndPassword, 
-  signInWithPopup, 
-  signOut 
-} from "firebase/auth";
-import { useEffect, useState, createContext } from "react";
+import { createContext, useEffect, useState } from "react";
+import { getAuth, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { app } from "../Firebase/firebase.init";
 import axios from "axios";
 
@@ -15,86 +7,68 @@ export const AuthContext = createContext();
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
-// Global axios instance for secure requests
+// Axios with credentials (cookie support)
 export const axiosSecure = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-});
-
-// Attach token to every secure request
-axiosSecure.interceptors.request.use((config) => {
-  const token = localStorage.getItem("access-token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+  withCredentials: true, // cookie পাঠানোর জন্য
 });
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Sign up
   const createUser = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  // Sign in
   const signIn = (email, password) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  // Google sign in
   const signInWithGoogle = () => {
     setLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
 
-  // Sign out
-  const signOutUser = () => {
+  const signOutUser = async () => {
     setLoading(true);
-    localStorage.removeItem("access-token");
-    return signOut(auth);
+    try {
+      await axiosSecure.get("/logout"); // backend থেকে cookie clear হবে
+      await signOut(auth);
+      setUser(null);
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Fetch role from DB
   const fetchUserRole = async (email) => {
     try {
       const res = await axiosSecure.get(`/users/role/${email}`);
-      return res.data.role || "user"; // Default role if not found
-    } catch (error) {
+      return res.data.role || "user";
+    } catch {
       return "user";
     }
   };
 
-  // Auth State Observer + JWT Handling
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser?.email) {
         try {
-          // 1. Get JWT token
-          const res = await axios.post(
-            `${import.meta.env.VITE_API_URL}/jwt`,
-            { email: currentUser.email }
-          );
-          const token = res.data.token;
-          localStorage.setItem("access-token", token);
+          // JWT request পাঠানো, cookie auto save হবে
+          await axiosSecure.post("/jwt", { email: currentUser.email });
 
-          // 2. Get role using global axiosSecure
           const role = await fetchUserRole(currentUser.email);
-
-          // 3. Set user with role
-          setUser({
-            ...currentUser,
-            role,
-          });
+          setUser({ ...currentUser, role });
         } catch (error) {
-          setUser(currentUser); // fallback: no role
+          console.error("JWT error:", error);
+          setUser(currentUser);
         }
       } else {
         setUser(null);
-        localStorage.removeItem("access-token");
       }
       setLoading(false);
     });
@@ -103,20 +77,16 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const authInfo = {
+    user,
+    loading,
     createUser,
     signIn,
     signInWithGoogle,
     signOutUser,
-    user,
     setUser,
-    loading,
   };
 
-  return (
-    <AuthContext.Provider value={authInfo}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

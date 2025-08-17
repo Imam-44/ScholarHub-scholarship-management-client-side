@@ -21,11 +21,7 @@ const AllAppliedScholarships = () => {
   // Local state for immediate UI updates
   const [applications, setApplications] = useState([]);
 
-  useEffect(() => {
-    setApplications(fetchedApplications);
-  }, [fetchedApplications]);
-
-  const sortedApplications = [...applications].sort((a, b) => {
+  const sortedApplications = [...fetchedApplications].sort((a, b) => {
     if (sortBy === 'appliedDate') {
       return new Date(b.date) - new Date(a.date);
     } else if (sortBy === 'deadline') {
@@ -34,6 +30,8 @@ const AllAppliedScholarships = () => {
       return 0;
     }
   });
+
+
 
   const handleDetails = (app) => setSelectedApp(app);
   const closeDetails = () => setSelectedApp(null);
@@ -192,15 +190,14 @@ const AllAppliedScholarships = () => {
                 <td className="px-4 py-2">{app.degree}</td>
                 <td className="px-4 py-2">
                   <span
-                    className={`inline-block px-3 py-1 rounded-full text-xs font-semibold text-white ${
-                      app.status === 'pending'
+                    className={`inline-block px-3 py-1 rounded-full text-xs font-semibold text-white ${app.status === 'pending'
                         ? 'bg-yellow-500'
                         : app.status === 'processing'
-                        ? 'bg-blue-600'
-                        : app.status === 'completed'
-                        ? 'bg-green-600'
-                        : 'bg-red-500'
-                    }`}
+                          ? 'bg-blue-600'
+                          : app.status === 'completed'
+                            ? 'bg-green-600'
+                            : 'bg-red-500'
+                      }`}
                   >
                     {app.status}
                   </span>
